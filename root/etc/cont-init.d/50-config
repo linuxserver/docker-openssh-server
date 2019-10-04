@@ -1,0 +1,35 @@
+#!/usr/bin/with-contenv bash
+
+# create folders
+mkdir -p \
+    /config \
+    /root/.ssh
+
+# set random password for root to unlock it
+usermod -p $(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;) root
+
+if [ ! -d /config/ssh ];then
+    cp -R /etc/ssh /config/
+fi
+
+if [ ! -f /config/authorized_keys ];then
+    touch /config/authorized_keys
+fi
+
+[[ -n "$PUBLIC_KEY" ]] && \
+    [[ ! $(grep "$PUBLIC_KEY" /config/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY" >> /config/authorized_keys
+
+cp -R /config/ssh /etc/
+cp /config/authorized_keys /root/.ssh/
+
+# permissions
+chown -R abc:abc \
+    /config
+chown -R root:root \
+    /root \
+    /etc/ssh
+chmod 700 \
+    /root/.ssh
+chmod 600 \
+    /config/authorized_keys

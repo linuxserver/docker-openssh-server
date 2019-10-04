@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+        /usr/sbin/sshd -D -e

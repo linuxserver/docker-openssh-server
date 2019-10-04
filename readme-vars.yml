@@ -1,0 +1,62 @@
+---
+
+# project information
+project_name: openssh-server
+project_url: "https://www.openssh.com/"
+project_logo: "https://upload.wikimedia.org/wikipedia/en/6/65/OpenSSH_logo.png"
+project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) is a sandboxed environment that allows ssh access without giving keys to the entire server.
+
+Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
+
+The users only have access to the folders mapped and the processes running inside this container."
+project_lsio_github_repo_url: "https://github.com/linuxserver/docker-{{ project_name }}"
+
+# supported architectures
+available_architectures:
+  - { arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
+  - { arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
+  - { arch: "{{ arch_armhf }}", tag: "arm32v7-latest"}
+
+# development version
+development_versions: false
+development_versions_items:
+  - { tag: "latest", desc: "Stable releases" }
+
+# container parameters
+common_param_env_vars_enabled: true
+param_container_name: "{{ project_name }}"
+param_usage_include_vols: true
+param_volumes:
+  - { vol_path: "/config", vol_host_path: "/path/to/appdata/config", desc: "Contains all relevant configuration files." }
+param_usage_include_ports: true
+param_ports:
+  - { external_port: "22", internal_port: "22", port_desc: "ssh port" }
+param_usage_include_env: true
+param_env_vars:
+  - { env_var: "TZ", env_value: "Europe/London", desc: "Specify a timezone to use EG Europe/London"}
+
+# optional container parameters
+opt_param_usage_include_env: true
+opt_param_env_vars:
+  - { env_var: "PUBLIC_KEY", env_value: "ssh-rsa AAAAAxxxxxxxxxxxx", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
+
+optional_block_1: false
+optional_block_1_items: ""
+
+# application setup block
+app_setup_block_enabled: true
+app_setup_block: |
+  If `PUBLIC_KEY` variable is set, it will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/authorized_keys` and the container should be restarted.  
+  Removing `PUBLIC_KEY` variable from docker run environment variables will not remove the key from `authorized_keys`.  
+
+  The users only have access to the folders mapped and the processes running inside this container.  
+  Add any volume mappings you like for the users to have access to.  
+  To install packages or services for users to access, use the LinuxServer container customization methods described [in this blog article](https://blog.linuxserver.io/2019/09/14/customizing-our-containers/).  
+
+  Sample use case is when a server admin would like to have automated incoming backups from a remote server to the local server, but they might not want all the other admins of the remote server to have full access to the local server.  
+  This container can be set up with a mounted folder for incoming backups, and rsync installed via LinuxServer container customization described above, so that the incoming backups can proceed, but remote server and its admins' access would be limited to the backup folder.
+
+
+# changelog
+changelogs:
+  - { date: "04.10.19:", desc: "Initial Release." }
