@@ -38,7 +38,7 @@ param_env_vars:
 # optional container parameters
 opt_param_usage_include_env: true
 opt_param_env_vars:
-  - { env_var: "PUBLIC_KEY", env_value: "ssh-rsa AAAAAxxxxxxxxxxxx", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
+  - { env_var: "PUBLIC_KEY", env_value: "yourpublickey", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
 
 optional_block_1: false
 optional_block_1_items: ""

@@ -65,7 +65,7 @@ docker create \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/London \
-  -e PUBLIC_KEY=ssh-rsa AAAAAxxxxxxxxxxxx `#optional` \
+  -e PUBLIC_KEY=yourpublickey `#optional` \
   -p 22:22 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -88,7 +88,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - PUBLIC_KEY=ssh-rsa AAAAAxxxxxxxxxxxx #optional
+      - PUBLIC_KEY=yourpublickey #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -106,7 +106,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |
-| `-e PUBLIC_KEY=ssh-rsa AAAAAxxxxxxxxxxxx` | Optional ssh public key, which will automatically be added to authorized_keys. |
+| `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## User / Group Identifiers
