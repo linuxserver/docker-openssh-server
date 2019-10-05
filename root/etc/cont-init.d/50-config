@@ -2,34 +2,41 @@
 
 # create folders
 mkdir -p \
-    /config \
-    /root/.ssh
+    /config/.ssh
 
-# set random password for root to unlock it
-usermod -p $(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;) root
+# set password for abc to unlock it and set sudo access
+sed -i '/abc ALL.*/d' /etc/sudoers
+if [ "$SUDO_ACCESS" == "true" ]; then
+    if [ -n "$SUDO_PASSWORD" ]; then
+        echo "abc ALL=(ALL) ALL" >> /etc/sudoers
+    else
+        echo "abc ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    fi
+fi
+SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
+echo "abc:$SUDO_PASSWORD" | chpasswd
 
-if [ ! -d /config/ssh ];then
-    cp -R /etc/ssh /config/
+if [ ! -d /config/ssh_host_keys ];then
+    cp -R /etc/ssh /config/ssh_host_keys
 fi
 
-if [ ! -f /config/authorized_keys ];then
-    touch /config/authorized_keys
+if [ ! -f /config/.ssh/authorized_keys ];then
+    touch /config/.ssh/authorized_keys
 fi
 
 [[ -n "$PUBLIC_KEY" ]] && \
-    [[ ! $(grep "$PUBLIC_KEY" /config/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY" >> /config/authorized_keys
+    [[ ! $(grep "$PUBLIC_KEY" /config/.ssh/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys
 
-cp -R /config/ssh /etc/
-cp /config/authorized_keys /root/.ssh/
+rm -rf /etc/ssh
+cp -R /config/ssh_host_keys /etc/ssh
 
 # permissions
 chown -R abc:abc \
     /config
 chown -R root:root \
-    /root \
     /etc/ssh
 chmod 700 \
-    /root/.ssh
+    /config/.ssh
 chmod 600 \
-    /config/authorized_keys
+    /config/.ssh/authorized_keys

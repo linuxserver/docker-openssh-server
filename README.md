@@ -66,6 +66,8 @@ docker create \
   -e PGID=1000 \
   -e TZ=Europe/London \
   -e PUBLIC_KEY=yourpublickey `#optional` \
+  -e SUDO_ACCESS=false `#optional` \
+  -e SUDO_PASSWORD=password `#optional` \
   -p 22:22 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -89,6 +91,8 @@ services:
       - PGID=1000
       - TZ=Europe/London
       - PUBLIC_KEY=yourpublickey #optional
+      - SUDO_ACCESS=false #optional
+      - SUDO_PASSWORD=password #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -107,6 +111,8 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |
 | `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
+| `-e SUDO_ACCESS=false` | Set to `true` to allow `abc`, the ssh user, sudo access. Without `SUDO_PASSWORD` set, this will allow passwordless sudo access. |
+| `-e SUDO_PASSWORD=password` | Optionally set a sudo password for `abc`, the ssh user. If this is not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## User / Group Identifiers
@@ -126,8 +132,12 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 &nbsp;
 ## Application Setup
 
-If `PUBLIC_KEY` variable is set, it will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/authorized_keys` and the container should be restarted.  
+If `PUBLIC_KEY` variable is set, it will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.  
 Removing `PUBLIC_KEY` variable from docker run environment variables will not remove the key from `authorized_keys`.  
+
+Connect to server via `ssh -i /path/to/private/key -p PORT abc@SERVERIP`  
+
+Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `SUDO_PASSWORD` allows setting an optional sudo password.  
 
 The users only have access to the folders mapped and the processes running inside this container.  
 Add any volume mappings you like for the users to have access to.  
@@ -136,7 +146,7 @@ To install packages or services for users to access, use the LinuxServer contain
 Sample use case is when a server admin would like to have automated incoming backups from a remote server to the local server, but they might not want all the other admins of the remote server to have full access to the local server.  
 This container can be set up with a mounted folder for incoming backups, and rsync installed via LinuxServer container customization described above, so that the incoming backups can proceed, but remote server and its admins' access would be limited to the backup folder.  
 
-It is also possible to run multiple copies of this containers with different ports mapped, different folders mounted and access to different private keys for compartmentalized access.
+It is also possible to run multiple copies of this container with different ports mapped, different folders mounted and access to different private keys for compartmentalized access.
 
 
 
