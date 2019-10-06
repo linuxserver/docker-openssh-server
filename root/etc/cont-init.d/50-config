@@ -4,17 +4,19 @@
 mkdir -p \
     /config/.ssh
 
+USER_NAME=${USER_NAME:-abc}
+
 # set password for abc to unlock it and set sudo access
-sed -i '/abc ALL.*/d' /etc/sudoers
+sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [ "$SUDO_ACCESS" == "true" ]; then
     if [ -n "$SUDO_PASSWORD" ]; then
-        echo "abc ALL=(ALL) ALL" >> /etc/sudoers
+        echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
     else
-        echo "abc ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+        echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     fi
 fi
 SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
-echo "abc:$SUDO_PASSWORD" | chpasswd
+echo "${USER_NAME}:${SUDO_PASSWORD}" | chpasswd
 
 if [ ! -d /config/ssh_host_keys ];then
     cp -R /etc/ssh /config/ssh_host_keys
@@ -32,7 +34,7 @@ rm -rf /etc/ssh
 cp -R /config/ssh_host_keys /etc/ssh
 
 # permissions
-chown -R abc:abc \
+chown -R "${USER_NAME}":"${USER_NAME}" \
     /config
 chown -R root:root \
     /etc/ssh

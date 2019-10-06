@@ -68,6 +68,7 @@ docker create \
   -e PUBLIC_KEY=yourpublickey `#optional` \
   -e SUDO_ACCESS=false `#optional` \
   -e SUDO_PASSWORD=password `#optional` \
+  -e USER_NAME=abc `#optional` \
   -p 22:22 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -93,6 +94,7 @@ services:
       - PUBLIC_KEY=yourpublickey #optional
       - SUDO_ACCESS=false #optional
       - SUDO_PASSWORD=password #optional
+      - USER_NAME=abc #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -113,6 +115,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
 | `-e SUDO_ACCESS=false` | Set to `true` to allow `abc`, the ssh user, sudo access. Without `SUDO_PASSWORD` set, this will allow passwordless sudo access. |
 | `-e SUDO_PASSWORD=password` | Optionally set a sudo password for `abc`, the ssh user. If this is not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
+| `-e USER_NAME=abc` | Optionally specify a user name (Default:`abc`) |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## User / Group Identifiers
@@ -135,7 +138,7 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 If `PUBLIC_KEY` variable is set, it will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.  
 Removing `PUBLIC_KEY` variable from docker run environment variables will not remove the key from `authorized_keys`.  
 
-Connect to server via `ssh -i /path/to/private/key -p PORT abc@SERVERIP`  
+Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`  
 
 Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `SUDO_PASSWORD` allows setting an optional sudo password.  
 
