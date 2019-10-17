@@ -9,12 +9,15 @@ USER_NAME=${USER_NAME:-linuxserver.io}
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [ "$SUDO_ACCESS" == "true" ]; then
-    if [ -n "$SUDO_PASSWORD" ]; then
+    if [ -n "$SUDO_PASSWORD" ] || [ -n "$SUDO_PASSWORD_FILE" ]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
     else
         echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     fi
 fi
+
+[[ -n "$SUDO_PASSWORD_FILE" ]] && \
+    SUDO_PASSWORD=$(cat "$SUDO_PASSWORD_FILE")
 SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
 echo "${USER_NAME}:${SUDO_PASSWORD}" | chpasswd
 
