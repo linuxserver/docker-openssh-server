@@ -157,6 +157,10 @@ This container can be set up with a mounted folder for incoming backups, and rsy
 
 It is also possible to run multiple copies of this container with different ports mapped, different folders mounted and access to different private keys for compartmentalized access.
 
+**TIPS**  
+You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.  
+You can optionally set the docker argument `hostname`
+
 
 
 ## Support Info
