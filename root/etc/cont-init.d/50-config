@@ -4,7 +4,7 @@
 mkdir -p \
     /config/.ssh
 
-USER_NAME=${USER_NAME:-abc}
+USER_NAME=${USER_NAME:-linuxserver.io}
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
@@ -29,6 +29,11 @@ fi
 [[ -n "$PUBLIC_KEY" ]] && \
     [[ ! $(grep "$PUBLIC_KEY" /config/.ssh/authorized_keys) ]] && \
     echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys
+
+[[ -n "$PUBLIC_KEY_FILE" ]] && \
+    PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE") && \
+    [[ ! $(grep "$PUBLIC_KEY2" /config/.ssh/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys
 
 rm -rf /etc/ssh
 cp -R /config/ssh_host_keys /etc/ssh

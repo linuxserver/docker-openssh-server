@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-USER_NAME=${USER_NAME:-abc}
+USER_NAME=${USER_NAME:-linuxserver.io}
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}

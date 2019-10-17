@@ -66,9 +66,10 @@ docker create \
   -e PGID=1000 \
   -e TZ=Europe/London \
   -e PUBLIC_KEY=yourpublickey `#optional` \
+  -e PUBLIC_KEY_FILE=/path/to/file `#optional` \
   -e SUDO_ACCESS=false `#optional` \
   -e SUDO_PASSWORD=password `#optional` \
-  -e USER_NAME=abc `#optional` \
+  -e USER_NAME=linuxserver.io `#optional` \
   -p 22:22 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -92,9 +93,10 @@ services:
       - PGID=1000
       - TZ=Europe/London
       - PUBLIC_KEY=yourpublickey #optional
+      - PUBLIC_KEY_FILE=/path/to/file #optional
       - SUDO_ACCESS=false #optional
       - SUDO_PASSWORD=password #optional
-      - USER_NAME=abc #optional
+      - USER_NAME=linuxserver.io #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -113,9 +115,10 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |
 | `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
+| `-e PUBLIC_KEY_FILE=/path/to/file` | Optionally specify a file containing the public key (works with docker secrets). |
 | `-e SUDO_ACCESS=false` | Set to `true` to allow `abc`, the ssh user, sudo access. Without `SUDO_PASSWORD` set, this will allow passwordless sudo access. |
 | `-e SUDO_PASSWORD=password` | Optionally set a sudo password for `abc`, the ssh user. If this is not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
-| `-e USER_NAME=abc` | Optionally specify a user name (Default:`abc`) |
+| `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## User / Group Identifiers
@@ -135,8 +138,8 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 &nbsp;
 ## Application Setup
 
-If `PUBLIC_KEY` variable is set, it will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.  
-Removing `PUBLIC_KEY` variable from docker run environment variables will not remove the key from `authorized_keys`.  
+If `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables are set, they will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.  
+Removing `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables from docker run environment variables will not remove the keys from `authorized_keys`. `PUBLIC_KEY_FILE` can be used with docker secrets.  
 
 Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`  
 
@@ -217,4 +220,4 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
-* **04.10.19:** - Initial Release.
+* **17.10.19:** - Initial Release.
