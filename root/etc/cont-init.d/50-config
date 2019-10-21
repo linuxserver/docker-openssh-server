@@ -23,7 +23,7 @@ else
 fi
 [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]] && \
     USER_PASSWORD=$(cat "$USER_PASSWORD_FILE") && \
-    echo "Sudo password is retrieved from file."
+    echo "User password is retrieved from file."
 USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
@@ -44,11 +44,13 @@ if [ "$PASSWORD_ACCESS" == "true" ]; then
     sed -i '/UsePAM/c\UsePAM yes' /etc/ssh/sshd_config
     chown root:"${USER_NAME}" \
         /etc/shadow
+    echo "User/password ssh access is enabled."
 else
     sed -i '/^PasswordAuthentication/c\PasswordAuthentication no' /etc/ssh/sshd_config
     sed -i '/UsePAM/c\UsePAM no' /etc/ssh/sshd_config
     chown root:root \
         /etc/shadow
+    echo "User/password ssh access is disabled."
 fi
 
 # set key auth in file
