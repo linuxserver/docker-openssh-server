@@ -10,6 +10,7 @@ RUN \
  echo "**** install runtime packages ****" && \
  apk add --no-cache --upgrade \
 	curl \
+	logrotate \
 	nano \
 	openssh-server \
 	sudo && \

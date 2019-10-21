@@ -2,11 +2,11 @@
 
 # create folders
 mkdir -p \
-    /config/.ssh \
-    /config/ssh_host_keys
+    /config/{.ssh,ssh_host_keys,logs/openssh}
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 echo "User name is set to $USER_NAME"
+sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${USER_NAME}" /etc/logrotate.d/openssh
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
