@@ -5,19 +5,25 @@ mkdir -p \
     /config/.ssh
 
 USER_NAME=${USER_NAME:-linuxserver.io}
+echo "User name is set to $USER_NAME"
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [ "$SUDO_ACCESS" == "true" ]; then
-    if [ -n "$SUDO_PASSWORD" ] || [ -n "$SUDO_PASSWORD_FILE" ]; then
+    if [ -n "$SUDO_PASSWORD" ] || [ -n "$SUDO_PASSWORD_FILE" -a -f "$SUDO_PASSWORD_FILE" ]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
+        echo "Sudo is enabled with password."
     else
         echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+        echo "Sudo is enabled without password."
     fi
+else
+    echo "Sudo is disabled."
 fi
 
-[[ -n "$SUDO_PASSWORD_FILE" ]] && \
-    SUDO_PASSWORD=$(cat "$SUDO_PASSWORD_FILE")
+[[ -n "$SUDO_PASSWORD_FILE" ]] && [[ -f "$SUDO_PASSWORD_FILE" ]] && \
+    SUDO_PASSWORD=$(cat "$SUDO_PASSWORD_FILE") && \
+    echo "Sudo password is retrieved from file."
 SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
 echo "${USER_NAME}:${SUDO_PASSWORD}" | chpasswd
 
@@ -31,12 +37,14 @@ fi
 
 [[ -n "$PUBLIC_KEY" ]] && \
     [[ ! $(grep "$PUBLIC_KEY" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys
+    echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys && \
+    echo "Public key from env variable added"
 
-[[ -n "$PUBLIC_KEY_FILE" ]] && \
+[[ -n "$PUBLIC_KEY_FILE" ]] && [[ -f "$PUBLIC_KEY_FILE" ]] && \
     PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE") && \
     [[ ! $(grep "$PUBLIC_KEY2" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys
+    echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
+    echo "Public key from file added"
 
 rm -rf /etc/ssh
 cp -R /config/ssh_host_keys /etc/ssh
