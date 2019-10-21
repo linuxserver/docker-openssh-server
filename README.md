@@ -71,7 +71,7 @@ docker create \
   -e SUDO_PASSWORD=password `#optional` \
   -e SUDO_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
-  -p 22:22 \
+  -p 2222:2222 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
   linuxserver/openssh-server
@@ -102,7 +102,7 @@ services:
     volumes:
       - /path/to/appdata/config:/config
     ports:
-      - 22:22
+      - 2222:2222
     restart: unless-stopped
 ```
 
@@ -112,7 +112,7 @@ Container images are configured using parameters passed at runtime (such as thos
 
 | Parameter | Function |
 | :----: | --- |
-| `-p 22` | ssh port |
+| `-p 2222` | ssh port |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |

@@ -1,4 +1,6 @@
 #!/usr/bin/with-contenv bash
 
+USER_NAME=${USER_NAME:-linuxserver.io}
+
 exec \
-        /usr/sbin/sshd -D -e
+        s6-setuidgid ${USER_NAME} /usr/sbin/sshd -D -e -p 2222

@@ -5,7 +5,7 @@ USER_NAME=${USER_NAME:-linuxserver.io}
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
-[[ ! "$USER_NAME" == "abc" ]] && \
+[[ "$USER_NAME" != "abc" ]] && \
     usermod -l "$USER_NAME" abc && \
     groupmod -n "$USER_NAME" abc
 

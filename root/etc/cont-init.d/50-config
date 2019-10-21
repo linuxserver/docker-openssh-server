@@ -2,7 +2,8 @@
 
 # create folders
 mkdir -p \
-    /config/.ssh
+    /config/.ssh \
+    /config/ssh_host_keys
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 echo "User name is set to $USER_NAME"
@@ -27,8 +28,14 @@ fi
 SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
 echo "${USER_NAME}:${SUDO_PASSWORD}" | chpasswd
 
-if [ ! -d /config/ssh_host_keys ];then
-    cp -R /etc/ssh /config/ssh_host_keys
+if [ ! -L /etc/ssh ];then
+    if [ ! -f /config/ssh_host_keys/sshd_config ]; then
+        sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
+        cp -a /etc/ssh/sshd_config /config/ssh_host_keys/
+    fi
+    rm -Rf /etc/ssh
+    ln -s /config/ssh_host_keys /etc/ssh
+    ssh-keygen -A
 fi
 
 if [ ! -f /config/.ssh/authorized_keys ];then
@@ -46,14 +53,9 @@ fi
     echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
     echo "Public key from file added"
 
-rm -rf /etc/ssh
-cp -R /config/ssh_host_keys /etc/ssh
-
 # permissions
 chown -R "${USER_NAME}":"${USER_NAME}" \
     /config
-chown -R root:root \
-    /etc/ssh
 chmod 700 \
     /config/.ssh
 chmod 600 \
