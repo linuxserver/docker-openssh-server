@@ -68,8 +68,9 @@ docker create \
   -e PUBLIC_KEY=yourpublickey `#optional` \
   -e PUBLIC_KEY_FILE=/path/to/file `#optional` \
   -e SUDO_ACCESS=false `#optional` \
-  -e SUDO_PASSWORD=password `#optional` \
-  -e SUDO_PASSWORD_FILE=/path/to/file `#optional` \
+  -e PASSWORD_ACCESS=false `#optional` \
+  -e USER_PASSWORD=password `#optional` \
+  -e USER_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
   -p 2222:2222 \
   -v /path/to/appdata/config:/config \
@@ -96,8 +97,9 @@ services:
       - PUBLIC_KEY=yourpublickey #optional
       - PUBLIC_KEY_FILE=/path/to/file #optional
       - SUDO_ACCESS=false #optional
-      - SUDO_PASSWORD=password #optional
-      - SUDO_PASSWORD_FILE=/path/to/file #optional
+      - PASSWORD_ACCESS=false #optional
+      - USER_PASSWORD=password #optional
+      - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=linuxserver.io #optional
     volumes:
       - /path/to/appdata/config:/config
@@ -118,9 +120,10 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |
 | `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
 | `-e PUBLIC_KEY_FILE=/path/to/file` | Optionally specify a file containing the public key (works with docker secrets). |
-| `-e SUDO_ACCESS=false` | Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `SUDO_PASSWORD` set, this will allow passwordless sudo access. |
-| `-e SUDO_PASSWORD=password` | Optionally set a sudo password for `abc`, the ssh user. If this or `SUDO_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
-| `-e SUDO_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `SUDO_PASSWORD` option (works with docker secrets). |
+| `-e SUDO_ACCESS=false` | Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access. |
+| `-e PASSWORD_ACCESS=false` | Set to `true` to allow user/password ssh access you will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well. |
+| `-e USER_PASSWORD=password` | Optionally set a sudo password for `abc`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
+| `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
 | `-v /config` | Contains all relevant configuration files. |
 
@@ -141,12 +144,14 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 &nbsp;
 ## Application Setup
 
-If `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables are set, they will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.  
+If `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables are set, they will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.
 Removing `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables from docker run environment variables will not remove the keys from `authorized_keys`. `PUBLIC_KEY_FILE` can be used with docker secrets.  
 
-Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`  
+We provide the ability to set and allow password based acces via the `PASSWORD_ACCESS` and `USER_PASSWORD` variables, though we as an organization discourage using password auth for public facing ssh endpoints. 
 
-Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `SUDO_PASSWORD` and `SUDO_PASSWORD_FILE` allow setting an optional sudo password.  
+Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`
+
+Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `USER_PASSWORD` and `USER_PASSWORD_FILE` allow setting an optional sudo password.  
 
 The users only have access to the folders mapped and the processes running inside this container.  
 Add any volume mappings you like for the users to have access to.  

@@ -6,12 +6,12 @@ mkdir -p \
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 echo "User name is set to $USER_NAME"
-sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${USER_NAME}" /etc/logrotate.d/openssh
+sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${USER_NAME}/g" /etc/logrotate.d/openssh
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [ "$SUDO_ACCESS" == "true" ]; then
-    if [ -n "$SUDO_PASSWORD" ] || [ -n "$SUDO_PASSWORD_FILE" -a -f "$SUDO_PASSWORD_FILE" ]; then
+    if [ -n "$USER_PASSWORD" ] || [ -n "$USER_PASSWORD_FILE" -a -f "$USER_PASSWORD_FILE" ]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
         echo "Sudo is enabled with password."
     else
@@ -21,13 +21,13 @@ if [ "$SUDO_ACCESS" == "true" ]; then
 else
     echo "Sudo is disabled."
 fi
-
-[[ -n "$SUDO_PASSWORD_FILE" ]] && [[ -f "$SUDO_PASSWORD_FILE" ]] && \
-    SUDO_PASSWORD=$(cat "$SUDO_PASSWORD_FILE") && \
+[[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]] && \
+    USER_PASSWORD=$(cat "$USER_PASSWORD_FILE") && \
     echo "Sudo password is retrieved from file."
-SUDO_PASSWORD=${SUDO_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
-echo "${USER_NAME}:${SUDO_PASSWORD}" | chpasswd
+USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
+echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
+# symlink out ssh config directory
 if [ ! -L /etc/ssh ];then
     if [ ! -f /config/ssh_host_keys/sshd_config ]; then
         sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
@@ -38,6 +38,20 @@ if [ ! -L /etc/ssh ];then
     ssh-keygen -A
 fi
 
+# password access
+if [ "$PASSWORD_ACCESS" == "true" ]; then
+    sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
+    sed -i '/UsePAM/c\UsePAM yes' /etc/ssh/sshd_config
+    chown root:"${USER_NAME}" \
+        /etc/shadow
+else
+    sed -i '/^PasswordAuthentication/c\PasswordAuthentication no' /etc/ssh/sshd_config
+    sed -i '/UsePAM/c\UsePAM no' /etc/ssh/sshd_config
+    chown root:root \
+        /etc/shadow
+fi
+
+# set key auth in file
 if [ ! -f /config/.ssh/authorized_keys ];then
     touch /config/.ssh/authorized_keys
 fi
