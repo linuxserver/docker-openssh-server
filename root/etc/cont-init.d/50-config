@@ -40,6 +40,7 @@ fi
 
 # password access
 if [ "$PASSWORD_ACCESS" == "true" ]; then
+    sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
     sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
     sed -i '/UsePAM/c\UsePAM yes' /etc/ssh/sshd_config
     chown root:"${USER_NAME}" \
