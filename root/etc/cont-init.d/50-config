@@ -72,6 +72,8 @@ fi
 # permissions
 chown -R "${USER_NAME}":"${USER_NAME}" \
     /config
+chmod go-w \
+    /config
 chmod 700 \
     /config/.ssh
 chmod 600 \
