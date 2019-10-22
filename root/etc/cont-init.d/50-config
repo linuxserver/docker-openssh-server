@@ -47,7 +47,7 @@ if [ "$PASSWORD_ACCESS" == "true" ]; then
     echo "User/password ssh access is enabled."
 else
     sed -i '/^PasswordAuthentication/c\PasswordAuthentication no' /etc/ssh/sshd_config
-    sed -i '/UsePAM/c\UsePAM no' /etc/ssh/sshd_config
+    sed -i '/UsePAM/c\#UsePAM no' /etc/ssh/sshd_config
     chown root:root \
         /etc/shadow
     echo "User/password ssh access is disabled."
