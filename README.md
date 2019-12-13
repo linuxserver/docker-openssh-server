@@ -66,6 +66,7 @@ Here are some example snippets to help you get started creating a container.
 ```
 docker create \
   --name=openssh-server \
+  --hostname=openssh-server `#optional` \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/London \
@@ -94,6 +95,7 @@ services:
   openssh-server:
     image: linuxserver/openssh-server
     container_name: openssh-server
+    hostname: openssh-server #optional
     environment:
       - PUID=1000
       - PGID=1000
@@ -118,6 +120,7 @@ Container images are configured using parameters passed at runtime (such as thos
 
 | Parameter | Function |
 | :----: | --- |
+| `--hostname=openssh-server` | Optionally the hostname can be defined. |
 | `-p 2222` | ssh port |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |

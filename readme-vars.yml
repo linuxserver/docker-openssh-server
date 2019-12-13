@@ -25,6 +25,9 @@ development_versions_items:
 # container parameters
 common_param_env_vars_enabled: true
 param_container_name: "{{ project_name }}"
+param_usage_include_hostname: 'optional' #you can set it to 'optional'
+param_hostname: "{{ project_name }}"
+param_hostname_desc: "Optionally the hostname can be defined."
 param_usage_include_vols: true
 param_volumes:
   - { vol_path: "/config", vol_host_path: "/path/to/appdata/config", desc: "Contains all relevant configuration files." }
