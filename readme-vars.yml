@@ -80,5 +80,6 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "13.01.20:", desc: "Add openssh-sftp-server." }
   - { date: "19.12.19:", desc: "Rebasing to alpine 3.11." }
   - { date: "17.10.19:", desc: "Initial Release." }
