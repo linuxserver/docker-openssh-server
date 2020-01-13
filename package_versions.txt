@@ -27,6 +27,7 @@ nghttp2-libs-1.40.0-r0
 openssh-keygen-8.1_p1-r0
 openssh-server-8.1_p1-r0
 openssh-server-common-8.1_p1-r0
+openssh-sftp-server-8.1_p1-r0
 popt-1.16-r7
 readline-8.0.1-r0
 scanelf-1.2.4-r0
