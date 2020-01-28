@@ -1,0 +1,20 @@
+---
+
+# jenkins variables
+project_name: docker-openssh-server
+external_type: os
+release_type: prerelease
+release_tag: mod-rsync
+ls_branch: mod-rsync
+skip_package_check: true
+repo_vars:
+  - CONTAINER_NAME = 'openssh-server'
+  - BUILD_VERSION_ARG = 'OPENSSH_RELEASE'
+  - LS_USER = 'linuxserver'
+  - LS_REPO = 'docker-openssh-server'
+  - DOCKERHUB_IMAGE = 'linuxserver/openssh-server'
+  - DEV_DOCKERHUB_IMAGE = 'lsiodev/openssh-server'
+  - PR_DOCKERHUB_IMAGE = 'lspipepr/openssh-server'
+  - DIST_IMAGE = 'alpine'
+  - MULTIARCH='false'
+  - CI='false'
