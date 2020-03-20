@@ -52,6 +52,17 @@ else
     echo "User/password ssh access is disabled."
 fi
 
+# allow tcp forwarding
+if [ "$TCP_FORWARDING" == "true" ]; then
+    sed -i '/^AllowTcpForwarding/c\AllowTcpForwarding yes' /etc/ssh/sshd_config
+    sed -i '/^GatewayPorts/c\GatewayPorts clientspecified' /etc/ssh/sshd_config
+    echo "TcpForwarding is enabled"
+else
+    sed -i '/^AllowTcpForwarding/c\AllowTcpForwarding no' /etc/ssh/sshd_config
+    sed -i '/^GatewayPorts/c\GatewayPorts no' /etc/ssh/sshd_config
+    echo "TcpForwarding is disabled"
+fi
+
 # set key auth in file
 if [ ! -f /config/.ssh/authorized_keys ];then
     touch /config/.ssh/authorized_keys

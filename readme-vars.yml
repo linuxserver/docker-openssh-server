@@ -45,6 +45,7 @@ opt_param_env_vars:
   - { env_var: "PUBLIC_KEY_FILE", env_value: "/path/to/file", desc: "Optionally specify a file containing the public key (works with docker secrets)."}
   - { env_var: "SUDO_ACCESS", env_value: "false", desc: "Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access."}
   - { env_var: "PASSWORD_ACCESS", env_value: "false", desc: "Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well."}
+  - { env_var: "TCP_FORWARDING", env_value: "false", desc: "Set to `true` to allow forwarding tcp connections through ssh. This also enables client side GatewayPorts exposure setting in ssh, ports still need to be manually exposed on the container. (Default: `false`)"}
   - { env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
   - { env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
   - { env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
@@ -90,6 +91,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "21.03.20:", desc: "Add tcp forwarding option." }
   - { date: "18.01.20:", desc: "Add key generation script." }
   - { date: "13.01.20:", desc: "Add openssh-sftp-server." }
   - { date: "19.12.19:", desc: "Rebasing to alpine 3.11." }
