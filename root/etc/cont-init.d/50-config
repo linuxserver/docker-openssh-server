@@ -53,6 +53,7 @@ else
 fi
 
 # set key auth in file
+sed -i '/^AuthorizedKeysFile/c\AuthorizedKeysFile \/config\/.ssh\/authorized_keys' /etc/ssh/sshd_config
 if [ ! -f /config/.ssh/authorized_keys ];then
     touch /config/.ssh/authorized_keys
 fi

@@ -5,8 +5,12 @@ USER_NAME=${USER_NAME:-linuxserver.io}
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
+[[ "$USER_HOME" == "" ]] && \
+    USER_HOME="/config"
+
 [[ "$USER_NAME" != "abc" ]] && \
     usermod -l "$USER_NAME" abc && \
+    usermod -d "$USER_HOME" "$USER_NAME" && \
     groupmod -n "$USER_NAME" abc
 
 groupmod -o -g "$PGID" "$USER_NAME"
