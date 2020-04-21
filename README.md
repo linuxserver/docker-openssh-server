@@ -77,6 +77,7 @@ docker create \
   -e USER_PASSWORD=password `#optional` \
   -e USER_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
+  -e USER_HOME=/config `#optional` \
   -p 2222:2222 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -107,6 +108,7 @@ services:
       - USER_PASSWORD=password #optional
       - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=linuxserver.io #optional
+      - USER_HOME=/config #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -132,6 +134,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e USER_PASSWORD=password` | Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
 | `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
+| `-e USER_HOME=/app` | Optionally specifies the users home directory (Default:`/config`) |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## Environment variables from files (Docker secrets)
