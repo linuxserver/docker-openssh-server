@@ -33,7 +33,7 @@ scanelf-1.2.4-r0
 shadow-4.7-r1
 ssl_client-1.31.1-r9
 sudo-1.8.31-r0
-tzdata-2019c-r0
+tzdata-2020a-r0
 xz-5.2.4-r0
 xz-libs-5.2.4-r0
 zlib-1.2.11-r3
