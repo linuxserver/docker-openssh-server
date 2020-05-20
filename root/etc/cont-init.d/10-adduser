@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 USER_NAME=${USER_NAME:-linuxserver.io}
+HOME_DIR=/home/"$USER_NAME"
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}
@@ -11,12 +12,13 @@ PGID=${PGID:-911}
 
 groupmod -o -g "$PGID" "$USER_NAME"
 usermod -o -u "$PUID" "$USER_NAME"
+usermod -d "$HOME_DIR" "$USER_NAME"
 
 echo '
 -------------------------------------
           _         ()
          | |  ___   _    __
-         | | / __| | |  /  \ 
+         | | / __| | |  /  \
          | | \__ \ | | | () |
          |_| |___/ |_|  \__/
 

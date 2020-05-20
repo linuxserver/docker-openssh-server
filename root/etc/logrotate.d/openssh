@@ -1,5 +1,7 @@
-  
-/config/logs/openssh/*.log {
+USER_NAME=${USER_NAME:-linuxserver.io}
+HOME_DIR=/home/"$USER_NAME"
+
+"$HOME_DIR"/logs/openssh/*.log {
  rotate 20
  size 500k
  compress

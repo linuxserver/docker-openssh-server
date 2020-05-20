@@ -1,11 +1,13 @@
 #!/usr/bin/with-contenv bash
 
+USER_NAME=${USER_NAME:-linuxserver.io}
+HOME_DIR=/home/"$USER_NAME"
+echo "User name is set to $USER_NAME, home dir is $HOME_DIR"
+
 # create folders
 mkdir -p \
-    /config/{.ssh,ssh_host_keys,logs/openssh}
+    "$HOME_DIR"/{.ssh,ssh_host_keys,logs/openssh}
 
-USER_NAME=${USER_NAME:-linuxserver.io}
-echo "User name is set to $USER_NAME"
 sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${USER_NAME}/g" /etc/logrotate.d/openssh
 
 # set password for abc to unlock it and set sudo access
@@ -29,12 +31,12 @@ echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
 # symlink out ssh config directory
 if [ ! -L /etc/ssh ];then
-    if [ ! -f /config/ssh_host_keys/sshd_config ]; then
-        sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
-        cp -a /etc/ssh/sshd_config /config/ssh_host_keys/
+    if [ ! -f "$HOME_DIR"/ssh_host_keys/sshd_config ]; then
+        sed -i "/#PidFile/c\PidFile $HOME_DIR\/sshd.pid" /etc/ssh/sshd_config
+        cp -a /etc/ssh/sshd_config "$HOME_DIR"/ssh_host_keys/
     fi
     rm -Rf /etc/ssh
-    ln -s /config/ssh_host_keys /etc/ssh
+    ln -s "$HOME_DIR"/ssh_host_keys /etc/ssh
     ssh-keygen -A
 fi
 
@@ -53,27 +55,27 @@ else
 fi
 
 # set key auth in file
-if [ ! -f /config/.ssh/authorized_keys ];then
-    touch /config/.ssh/authorized_keys
+if [ ! -f "$HOME_DIR"/.ssh/authorized_keys ];then
+    touch "$HOME_DIR"/.ssh/authorized_keys
 fi
 
 [[ -n "$PUBLIC_KEY" ]] && \
-    [[ ! $(grep "$PUBLIC_KEY" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys && \
+    [[ ! $(grep "$PUBLIC_KEY" "$HOME_DIR"/.ssh/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY" >> "$HOME_DIR"/.ssh/authorized_keys && \
     echo "Public key from env variable added"
 
 [[ -n "$PUBLIC_KEY_FILE" ]] && [[ -f "$PUBLIC_KEY_FILE" ]] && \
     PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE") && \
-    [[ ! $(grep "$PUBLIC_KEY2" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
+    [[ ! $(grep "$PUBLIC_KEY2" "$HOME_DIR"/.ssh/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY2" >> "$HOME_DIR"/.ssh/authorized_keys && \
     echo "Public key from file added"
 
 # permissions
 chown -R "${USER_NAME}":"${USER_NAME}" \
-    /config
+    "$HOME_DIR"
 chmod go-w \
-    /config
+    "$HOME_DIR"
 chmod 700 \
-    /config/.ssh
+    "$HOME_DIR"/.ssh
 chmod 600 \
-    /config/.ssh/authorized_keys
+    "$HOME_DIR"/.ssh/authorized_keys

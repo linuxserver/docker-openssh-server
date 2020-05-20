@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 USER_NAME=${USER_NAME:-linuxserver.io}
+HOME_DIR=/home/"$USER_NAME"
 
 exec \
-        s6-setuidgid ${USER_NAME} /usr/sbin/sshd -D -e -p 2222 -E /config/logs/openssh/openssh.log
+        s6-setuidgid ${USER_NAME} /usr/sbin/sshd -D -e -p 2222 -E "$HOME_DIR"/logs/openssh/openssh.log
