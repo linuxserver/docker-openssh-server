@@ -103,7 +103,7 @@ pipeline {
       steps{
         script{
           env.EXT_RELEASE = sh(
-            script: ''' curl -s http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/ |awk -F '(openssh-server-|.apk)' '/openssh-server.*.apk/ {print $2; exit}' ''',
+            script: ''' curl -s http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/ |awk -F '(openssh-server-|.apk)' '/openssh-server.*.apk/ {print $2; exit}' ''',
             returnStdout: true).trim()
             env.RELEASE_LINK = 'custom_command'
         }
