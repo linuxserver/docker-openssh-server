@@ -24,7 +24,7 @@ musl-utils-1.1.24-r8
 nano-4.9.3-r0
 ncurses-libs-6.2_p20200523-r0
 ncurses-terminfo-base-6.2_p20200523-r0
-nghttp2-libs-1.40.0-r0
+nghttp2-libs-1.41.0-r0
 openssh-keygen-8.3_p1-r0
 openssh-server-8.3_p1-r0
 openssh-server-common-8.3_p1-r0
