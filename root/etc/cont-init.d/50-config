@@ -5,8 +5,9 @@ mkdir -p \
     /config/{.ssh,ssh_host_keys,logs/openssh}
 
 USER_NAME=${USER_NAME:-linuxserver.io}
-echo "User name is set to $USER_NAME"
-sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${USER_NAME}/g" /etc/logrotate.d/openssh
+GROUP_NAME=${GROUP_NAME:-linuxserver.io}
+echo "User name is set to $USER_NAME and group name to ${GROUP_NAME}"
+sed -i "s/su linuxserver.io linuxserver.io/su ${USER_NAME} ${GROUP_NAME}/g" /etc/logrotate.d/openssh
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
@@ -42,7 +43,7 @@ fi
 if [ "$PASSWORD_ACCESS" == "true" ]; then
     sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
     sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
-    chown root:"${USER_NAME}" \
+    chown root:"${GROUP_NAME}" \
         /etc/shadow
     echo "User/password ssh access is enabled."
 else
@@ -69,7 +70,7 @@ fi
     echo "Public key from file added"
 
 # permissions
-chown -R "${USER_NAME}":"${USER_NAME}" \
+chown -R "${USER_NAME}":"${GROUP_NAME}" \
     /config
 chmod go-w \
     /config

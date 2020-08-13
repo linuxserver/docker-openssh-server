@@ -1,22 +1,29 @@
 #!/usr/bin/with-contenv bash
 
 USER_NAME=${USER_NAME:-linuxserver.io}
+GROUP_NAME=${GROUP_NAME:-linuxserver.io}
 
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
-[[ "$USER_NAME" != "abc" ]] && \
+if [ "$BAD_USER_NAME" == "true" ]; then
+  [[ "$USER_NAME" != "abc" ]] && \
+    usermod -b -l "$USER_NAME" abc && \
+    groupmod -n "$GROUP_NAME" abc
+else
+  [[ "$USER_NAME" != "abc" ]] && \
     usermod -l "$USER_NAME" abc && \
-    groupmod -n "$USER_NAME" abc
+    groupmod -n "$GROUP_NAME" abc
+fi
 
-groupmod -o -g "$PGID" "$USER_NAME"
+groupmod -o -g "$PGID" "$GROUP_NAME"
 usermod -o -u "$PUID" "$USER_NAME"
 
 echo '
 -------------------------------------
           _         ()
          | |  ___   _    __
-         | | / __| | |  /  \ 
+         | | / __| | |  /  \
          | | \__ \ | | | () |
          |_| |___/ |_|  \__/
 
@@ -32,6 +39,6 @@ User uid:    $(id -u "$USER_NAME")
 User gid:    $(id -g "$USER_NAME")
 -------------------------------------
 "
-chown "$USER_NAME":"$USER_NAME" /app
-chown "$USER_NAME":"$USER_NAME" /config
-chown "$USER_NAME":"$USER_NAME" /defaults
+chown "$USER_NAME":"$GROUP_NAME" /app
+chown "$USER_NAME":"$GROUP_NAME" /config
+chown "$USER_NAME":"$GROUP_NAME" /defaults
