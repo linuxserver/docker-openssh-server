@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+USER_NAME=${USER_NAME:-linuxserver.io}
+
+exec \
+    s6-setuidgid ${USER_NAME} s6-log n30 s10000000 S30000000 T !"gzip -nq9" /config/logs/openssh

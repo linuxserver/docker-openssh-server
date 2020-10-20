@@ -2,5 +2,5 @@
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 
-exec \
-        s6-setuidgid ${USER_NAME} /usr/sbin/sshd -D -e -p 2222 -E /config/logs/openssh/openssh.log
+exec 2>&1 \
+        s6-setuidgid ${USER_NAME} /usr/sbin/sshd -D -e -p 2222
