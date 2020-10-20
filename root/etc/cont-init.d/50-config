@@ -76,6 +76,10 @@ fi
     mv /config/logs/openssh /config/logs/openssh.old.logs && \
     mkdir -p /config/logs/openssh
 
+# add log file info
+[[ ! -f /config/logs/loginfo.txt ]] && \
+    echo "The current log file is named \"current\". The rotated log files are gzipped, named with a TAI64N timestamp and a \".s\" extension" > /config/logs/loginfo.txt
+
 # permissions
 chown -R "${USER_NAME}":"${USER_NAME}" \
     /config
