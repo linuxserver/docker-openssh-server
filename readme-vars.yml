@@ -90,6 +90,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "21.10.20:", desc: "Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban." }
   - { date: "20.10.20:", desc: "Set umask for sftp." }
   - { date: "01.06.20:", desc: "Rebasing to alpine 3.12." }
   - { date: "18.01.20:", desc: "Add key generation script." }

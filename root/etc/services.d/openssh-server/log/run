@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+
+exec s6-log n30 s2000000 S15000000 T !"gzip -nq9" /config/logs/openssh
