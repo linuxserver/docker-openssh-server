@@ -52,6 +52,10 @@ else
     echo "User/password ssh access is disabled."
 fi
 
+# set umask for sftp
+UMASK=${UMASK:-022}
+sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /etc/ssh/sshd_config
+
 # set key auth in file
 if [ ! -f /config/.ssh/authorized_keys ];then
     touch /config/.ssh/authorized_keys
