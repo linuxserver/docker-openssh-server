@@ -36,7 +36,7 @@ Find us at:
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/openssh-server)
 [![Docker Stars](https://img.shields.io/docker/stars/linuxserver/openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/openssh-server)
 [![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-openssh-server%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-openssh-server/job/master/)
-[![LSIO CI](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=CI&query=CI&url=https%3A%2F%2Flsio-ci.ams3.digitaloceanspaces.com%2Flinuxserver%2Fopenssh-server%2Flatest%2Fci-status.yml)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/openssh-server/latest/index.html)
+[![LSIO CI](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=CI&query=CI&url=https%3A%2F%2Fci-tests.linuxserver.io%2Flinuxserver%2Fopenssh-server%2Flatest%2Fci-status.yml)](https://ci-tests.linuxserver.io/linuxserver/openssh-server/latest/index.html)
 
 [Openssh-server](https://www.openssh.com/) is a sandboxed environment that allows ssh access without giving keys to the entire server.
 Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
@@ -48,7 +48,7 @@ The users only have access to the folders mapped and the processes running insid
 
 Our images support multiple architectures such as `x86-64`, `arm64` and `armhf`. We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
 
-Simply pulling `linuxserver/openssh-server` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+Simply pulling `ghcr.io/linuxserver/openssh-server` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image are:
 
@@ -72,7 +72,7 @@ Compatible with docker-compose v2 schemas.
 version: "2.1"
 services:
   openssh-server:
-    image: linuxserver/openssh-server
+    image: ghcr.io/linuxserver/openssh-server
     container_name: openssh-server
     hostname: openssh-server #optional
     environment:
@@ -112,7 +112,7 @@ docker run -d \
   -p 2222:2222 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
-  linuxserver/openssh-server
+  ghcr.io/linuxserver/openssh-server
 ```
 
 
@@ -216,7 +216,7 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 * container version number
   * `docker inspect -f '{{ index .Config.Labels "build_version" }}' openssh-server`
 * image version number
-  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/openssh-server`
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' ghcr.io/linuxserver/openssh-server`
 
 ## Updating Info
 
@@ -232,7 +232,7 @@ Below are the instructions for updating containers:
 * You can also remove the old dangling images: `docker image prune`
 
 ### Via Docker Run
-* Update the image: `docker pull linuxserver/openssh-server`
+* Update the image: `docker pull ghcr.io/linuxserver/openssh-server`
 * Stop the running container: `docker stop openssh-server`
 * Delete the container: `docker rm openssh-server`
 * Recreate a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/config` folder and settings will be preserved)
@@ -262,7 +262,7 @@ cd docker-openssh-server
 docker build \
   --no-cache \
   --pull \
-  -t linuxserver/openssh-server:latest .
+  -t ghcr.io/linuxserver/openssh-server:latest .
 ```
 
 The ARM variants can be built on x86_64 hardware using `multiarch/qemu-user-static`
