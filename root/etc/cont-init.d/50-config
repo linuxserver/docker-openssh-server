@@ -77,6 +77,7 @@ then
     sed -i 's/^#Port 22/Port 2222/g' /etc/ssh/sshd_config
 else
     sed -i 's/^#Port 22/Port '"$INTERNAL_PORT"'/g' /etc/ssh/sshd_config
+fi
 
 # back up old log files processed by logrotate
 [[ -f /config/logs/openssh/openssh.log ]] && \
