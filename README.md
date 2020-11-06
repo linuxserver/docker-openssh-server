@@ -86,7 +86,7 @@ services:
       - USER_PASSWORD=password #optional
       - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=linuxserver.io #optional
-      - INTERNAL_PORT=2244 #optional
+      - INTERNAL_PORT=2222 #optional
     volumes:
       - /path/to/appdata/config:/config
     ports:
@@ -110,7 +110,7 @@ docker run -d \
   -e USER_PASSWORD=password `#optional` \
   -e USER_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
-  -e INTERNAL_PORT=2244 `#optional` \
+  -e INTERNAL_PORT=2222 `#optional` \
   -p 2222:2222 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
@@ -136,7 +136,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e USER_PASSWORD=password` | Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
 | `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
-| `-e INTERNAL_PORT=2244` | Optionally specify a port on which sshd will listen (Default:`2222`) |
+| `-e INTERNAL_PORT=2222` | Optionally specify a port on which sshd will listen (Default:`2222`) |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## Environment variables from files (Docker secrets)
