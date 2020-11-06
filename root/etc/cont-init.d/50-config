@@ -71,6 +71,10 @@ fi
     echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
     echo "Public key from file added"
 
+# set internal sshd port
+[[ -n "$INTERNAL_PORT" ]] && \
+    sed -i 's/^#Port 22/Port '"$INTERNAL_PORT"'/g' /etc/ssh/sshd_config
+
 # back up old log files processed by logrotate
 [[ -f /config/logs/openssh/openssh.log ]] && \
     mv /config/logs/openssh /config/logs/openssh.old.logs && \
