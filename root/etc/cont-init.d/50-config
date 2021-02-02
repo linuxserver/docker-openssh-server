@@ -71,6 +71,15 @@ fi
     echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
     echo "Public key from file added"
 
+if [ -d "$PUBLIC_KEY_DIR" ];then
+    for F in "${PUBLIC_KEY_DIR}"/*;do
+        PUBLIC_KEYN=$(cat "$F") && \
+        [[ ! $(grep "$PUBLIC_KEYN" /config/.ssh/authorized_keys) ]] && \
+        echo "$PUBLIC_KEYN" >> /config/.ssh/authorized_keys && \
+        echo "Public key from file '$F' added"
+    done
+fi
+
 # back up old log files processed by logrotate
 [[ -f /config/logs/openssh/openssh.log ]] && \
     mv /config/logs/openssh /config/logs/openssh.old.logs && \
