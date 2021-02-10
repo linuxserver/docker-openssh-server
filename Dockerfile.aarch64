@@ -20,6 +20,7 @@ RUN \
 	| awk -F '(openssh-server-|.apk)' '/openssh-server.*.apk/ {print $2; exit}'); \
  fi && \
  apk add --no-cache \
+	openssh-client==${OPENSSH_RELEASE} \
 	openssh-server==${OPENSSH_RELEASE} \
 	openssh-sftp-server==${OPENSSH_RELEASE} && \
  echo "**** setup openssh environment ****" && \
