@@ -7,12 +7,12 @@ busybox-1.32.1-r3
 ca-certificates-20191127-r5
 ca-certificates-bundle-20191127-r5
 coreutils-8.32-r2
-curl-7.74.0-r0
+curl-7.74.0-r1
 libacl-2.2.53-r0
 libattr-2.4.48-r0
 libc-utils-0.7.2-r3
 libcrypto1.1-1.1.1j-r0
-libcurl-7.74.0-r0
+libcurl-7.74.0-r1
 libedit-20191231.3.1-r1
 libintl-0.20.2-r2
 libmagic-5.39-r0
