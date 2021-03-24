@@ -27,11 +27,11 @@ nano-5.4-r1
 ncurses-libs-6.2_p20210109-r0
 ncurses-terminfo-base-6.2_p20210109-r0
 nghttp2-libs-1.42.0-r1
-openssh-client-8.4_p1-r2
-openssh-keygen-8.4_p1-r2
-openssh-server-8.4_p1-r2
-openssh-server-common-8.4_p1-r2
-openssh-sftp-server-8.4_p1-r2
+openssh-client-8.4_p1-r3
+openssh-keygen-8.4_p1-r3
+openssh-server-8.4_p1-r3
+openssh-server-common-8.4_p1-r3
+openssh-sftp-server-8.4_p1-r3
 popt-1.18-r0
 procps-3.3.16-r0
 readline-8.1.0-r0
