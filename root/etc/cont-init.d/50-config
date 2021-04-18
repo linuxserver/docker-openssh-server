@@ -58,6 +58,7 @@ sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /etc
 # set key auth in file
 if [ ! -f /config/.ssh/authorized_keys ];then
     touch /config/.ssh/authorized_keys
+    sed -i '/^AuthorizedKeysFile/c\AuthorizedKeysFile \/config\/\.ssh\/authorized_keys' /etc/ssh/sshd_config
 fi
 
 [[ -n "$PUBLIC_KEY" ]] && \
