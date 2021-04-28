@@ -65,6 +65,12 @@ fi
     echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys && \
     echo "Public key from env variable added"
 
+[[ -n "$PUBLIC_KEY_URL" ]] && \
+    PUBLIC_KEY_DOWNLOADED=$(curl -s $PUBLIC_KEY_URL)
+    [[ ! $(grep "$PUBLIC_KEY_DOWNLOADED" /config/.ssh/authorized_keys) ]] && \
+    echo "$PUBLIC_KEY_DOWNLOADED" >> /config/.ssh/authorized_keys && \
+    echo "Public key downloaded from '$PUBLIC_KEY_URL' added"   
+
 [[ -n "$PUBLIC_KEY_FILE" ]] && [[ -f "$PUBLIC_KEY_FILE" ]] && \
     PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE") && \
     [[ ! $(grep "$PUBLIC_KEY2" /config/.ssh/authorized_keys) ]] && \
