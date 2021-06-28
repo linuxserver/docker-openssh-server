@@ -26,7 +26,7 @@ pipeline {
     DIST_IMAGE = 'alpine'
     DIST_TAG = '3.14'
     DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.14/main/'
-    DIST_REPO_PACKAGES = 'openssh-server'
+    DIST_REPO_PACKAGES = 'openssh-server-pam'
     MULTIARCH='true'
     CI='true'
     CI_WEB='false'
