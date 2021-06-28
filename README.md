@@ -281,6 +281,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **28.06.21:** - Rebasing to alpine 3.14. Add support for PAM.
 * **10.02.21:** - Rebasing to alpine 3.13. Add openssh-client for scp.
 * **21.10.20:** - Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban.
 * **20.10.20:** - Set umask for sftp.
