@@ -91,6 +91,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "28.06.21:", desc: "Rebasing to alpine 3.14. Add support for PAM." }
   - { date: "10.02.21:", desc: "Rebasing to alpine 3.13. Add openssh-client for scp." }
   - { date: "21.10.20:", desc: "Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban." }
   - { date: "20.10.20:", desc: "Set umask for sftp." }
