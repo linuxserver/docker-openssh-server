@@ -1,6 +1,6 @@
 alpine-baselayout-3.2.0-r16
 alpine-keys-2.3-r1
-apk-tools-2.12.6-r0
+apk-tools-2.12.7-r0
 bash-5.1.4-r0
 brotli-libs-1.0.9-r5
 busybox-1.33.1-r3
