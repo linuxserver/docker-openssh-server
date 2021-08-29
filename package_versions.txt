@@ -11,14 +11,14 @@ curl-7.78.0-r0
 libacl-2.2.53-r0
 libattr-2.5.1-r0
 libc-utils-0.7.2-r3
-libcrypto1.1-1.1.1k-r0
+libcrypto1.1-1.1.1l-r0
 libcurl-7.78.0-r0
 libedit-20210216.3.1-r0
 libintl-0.21-r0
 libmagic-5.40-r1
 libproc-3.3.17-r0
 libretls-3.3.3p1-r2
-libssl1.1-1.1.1k-r0
+libssl1.1-1.1.1l-r0
 linux-pam-1.5.1-r1
 logrotate-3.18.1-r0
 musl-1.2.2-r3
