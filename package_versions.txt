@@ -27,12 +27,12 @@ nano-5.7-r2
 ncurses-libs-6.2_p20210612-r0
 ncurses-terminfo-base-6.2_p20210612-r0
 nghttp2-libs-1.43.0-r0
-openssh-client-common-8.6_p1-r2
-openssh-client-default-8.6_p1-r2
-openssh-keygen-8.6_p1-r2
-openssh-server-common-8.6_p1-r2
-openssh-server-pam-8.6_p1-r2
-openssh-sftp-server-8.6_p1-r2
+openssh-client-common-8.6_p1-r3
+openssh-client-default-8.6_p1-r3
+openssh-keygen-8.6_p1-r3
+openssh-server-common-8.6_p1-r3
+openssh-server-pam-8.6_p1-r3
+openssh-sftp-server-8.6_p1-r3
 popt-1.18-r0
 procps-3.3.17-r0
 readline-8.1.0-r0
@@ -42,7 +42,7 @@ shadow-4.8.1-r0
 skalibs-2.10.0.3-r0
 ssl_client-1.33.1-r3
 sudo-1.9.7_p1-r1
-tzdata-2021b-r0
+tzdata-2021c-r0
 utmps-0.1.0.2-r0
 xz-5.2.5-r0
 xz-libs-5.2.5-r0
