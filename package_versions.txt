@@ -42,7 +42,7 @@ shadow-4.8.1-r0
 skalibs-2.10.0.3-r0
 ssl_client-1.33.1-r3
 sudo-1.9.7_p1-r1
-tzdata-2021d-r0
+tzdata-2021e-r0
 utmps-0.1.0.2-r0
 xz-5.2.5-r0
 xz-libs-5.2.5-r0
