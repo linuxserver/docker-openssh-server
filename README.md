@@ -33,7 +33,7 @@ Find us at:
 [![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-openssh-server/releases)
 [![GitHub Package Repository](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub%20Package&logo=github)](https://github.com/linuxserver/docker-openssh-server/packages)
 [![GitLab Container Registry](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitLab%20Registry&logo=gitlab)](https://gitlab.com/linuxserver.io/docker-openssh-server/container_registry)
-[![MicroBadger Layers](https://img.shields.io/microbadger/layers/linuxserver/openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge)](https://microbadger.com/images/linuxserver/openssh-server "Get your own version badge on microbadger.com")
+[![Quay.io](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Quay.io)](https://quay.io/repository/linuxserver.io/openssh-server)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/openssh-server)
 [![Docker Stars](https://img.shields.io/docker/stars/linuxserver/openssh-server.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/openssh-server)
 [![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-openssh-server%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-openssh-server/job/master/)
@@ -49,7 +49,7 @@ The users only have access to the folders mapped and the processes running insid
 
 Our images support multiple architectures such as `x86-64`, `arm64` and `armhf`. We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
 
-Simply pulling `ghcr.io/linuxserver/openssh-server` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+Simply pulling `lscr.io/linuxserver/openssh-server` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image are:
 
@@ -61,52 +61,50 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-If `PUBLIC_KEY` or `PUBLIC_KEY_FILE`, or `PUBLIC_KEY_DIR' variables are set, the specified keys will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.
-Removing `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables from docker run environment variables will not remove the keys from `authorized_keys`. `PUBLIC_KEY_FILE` and `PUBLIC_KEY_DIR' can be used with docker secrets.  
+If `PUBLIC_KEY` or `PUBLIC_KEY_FILE`, or `PUBLIC_KEY_DIR` variables are set, the specified keys will automatically be added to `authorized_keys`. If not, the keys can manually be added to `/config/.ssh/authorized_keys` and the container should be restarted.
+Removing `PUBLIC_KEY` or `PUBLIC_KEY_FILE` variables from docker run environment variables will not remove the keys from `authorized_keys`. `PUBLIC_KEY_FILE` and `PUBLIC_KEY_DIR` can be used with docker secrets.
 
-We provide the ability to set and allow password based access via the `PASSWORD_ACCESS` and `USER_PASSWORD` variables, though we as an organization discourage using password auth for public facing ssh endpoints. 
+We provide the ability to set and allow password based access via the `PASSWORD_ACCESS` and `USER_PASSWORD` variables, though we as an organization discourage using password auth for public facing ssh endpoints.
 
 Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`
 
-Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `USER_PASSWORD` and `USER_PASSWORD_FILE` allow setting an optional sudo password.  
+Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `USER_PASSWORD` and `USER_PASSWORD_FILE` allow setting an optional sudo password.
 
-The users only have access to the folders mapped and the processes running inside this container.  
-Add any volume mappings you like for the users to have access to.  
-To install packages or services for users to access, use the LinuxServer container customization methods described [in this blog article](https://blog.linuxserver.io/2019/09/14/customizing-our-containers/).  
+The users only have access to the folders mapped and the processes running inside this container.
+Add any volume mappings you like for the users to have access to.
+To install packages or services for users to access, use the LinuxServer container customization methods described [in this blog article](https://blog.linuxserver.io/2019/09/14/customizing-our-containers/).
 
-Sample use case is when a server admin would like to have automated incoming backups from a remote server to the local server, but they might not want all the other admins of the remote server to have full access to the local server.  
-This container can be set up with a mounted folder for incoming backups, and rsync installed via LinuxServer container customization described above, so that the incoming backups can proceed, but remote server and its admins' access would be limited to the backup folder.  
+Sample use case is when a server admin would like to have automated incoming backups from a remote server to the local server, but they might not want all the other admins of the remote server to have full access to the local server.
+This container can be set up with a mounted folder for incoming backups, and rsync installed via LinuxServer container customization described above, so that the incoming backups can proceed, but remote server and its admins' access would be limited to the backup folder.
 
 It is also possible to run multiple copies of this container with different ports mapped, different folders mounted and access to different private keys for compartmentalized access.
 
-**TIPS**  
-You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.  
+#### TIPS
+You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.
 You can optionally set the docker argument `hostname`
 
 ## Key Generation
 
-This container has a helper script to generate an ssh private/public key. In order to generate a key please run: 
+This container has a helper script to generate an ssh private/public key. In order to generate a key please run:
 ```
 docker run --rm -it --entrypoint /keygen.sh linuxserver/openssh-server
 ```
 
-Then simply follow the prompts. 
+Then simply follow the prompts.
 The keys generated by this script are only displayed on your console output, so make sure to save them somewhere after generation.
 
 ## Usage
 
 Here are some example snippets to help you get started creating a container.
 
-### docker-compose ([recommended](https://docs.linuxserver.io/general/docker-compose))
-
-Compatible with docker-compose v2 schemas.
+### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
 ---
 version: "2.1"
 services:
   openssh-server:
-    image: ghcr.io/linuxserver/openssh-server
+    image: lscr.io/linuxserver/openssh-server
     container_name: openssh-server
     hostname: openssh-server #optional
     environment:
@@ -128,7 +126,7 @@ services:
     restart: unless-stopped
 ```
 
-### docker cli
+### docker cli ([click here for more info](https://docs.docker.com/engine/reference/commandline/cli/))
 
 ```bash
 docker run -d \
@@ -148,7 +146,7 @@ docker run -d \
   -p 2222:2222 \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
-  ghcr.io/linuxserver/openssh-server
+  lscr.io/linuxserver/openssh-server
 ```
 
 ## Parameters
@@ -215,7 +213,7 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 * container version number
   * `docker inspect -f '{{ index .Config.Labels "build_version" }}' openssh-server`
 * image version number
-  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' ghcr.io/linuxserver/openssh-server`
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/openssh-server`
 
 ## Updating Info
 
@@ -233,7 +231,7 @@ Below are the instructions for updating containers:
 
 ### Via Docker Run
 
-* Update the image: `docker pull ghcr.io/linuxserver/openssh-server`
+* Update the image: `docker pull lscr.io/linuxserver/openssh-server`
 * Stop the running container: `docker stop openssh-server`
 * Delete the container: `docker rm openssh-server`
 * Recreate a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/config` folder and settings will be preserved)
@@ -268,7 +266,7 @@ cd docker-openssh-server
 docker build \
   --no-cache \
   --pull \
-  -t ghcr.io/linuxserver/openssh-server:latest .
+  -t lscr.io/linuxserver/openssh-server:latest .
 ```
 
 The ARM variants can be built on x86_64 hardware using `multiarch/qemu-user-static`
@@ -281,6 +279,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **28.06.21:** - Rebasing to alpine 3.14. Add support for PAM.
 * **10.02.21:** - Rebasing to alpine 3.13. Add openssh-client for scp.
 * **21.10.20:** - Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban.
 * **20.10.20:** - Set umask for sftp.
