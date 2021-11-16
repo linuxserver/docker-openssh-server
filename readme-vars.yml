@@ -44,6 +44,7 @@ opt_param_env_vars:
   - { env_var: "PUBLIC_KEY", env_value: "yourpublickey", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
   - { env_var: "PUBLIC_KEY_FILE", env_value: "/path/to/file", desc: "Optionally specify a file containing the public key (works with docker secrets)."}
   - { env_var: "PUBLIC_KEY_DIR", env_value: "/path/to/directory/containing/_only_/pubkeys", desc: "Optionally specify a directory containing the public keys (works with docker secrets)."}
+  - { env_var: "PUBLIC_KEY_URL", env_vaue: "https://github.com/username.keys", desc: "Optionally specify a URL containing the public key."}
   - { env_var: "SUDO_ACCESS", env_value: "false", desc: "Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access."}
   - { env_var: "PASSWORD_ACCESS", env_value: "false", desc: "Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well."}
   - { env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
