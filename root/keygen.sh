@@ -9,7 +9,7 @@ case $opt in
   "rsa"|2) TYPE="rsa";;
   "ed25519"|3) TYPE="ed25519";;
   "dsa"|4) TYPE="dsa";;
-  *) echo "blank or unkown option choosing ecdsa" && TYPE="ecdsa" BITS="-b 521";;
+  *) echo "blank or unknown option choosing ecdsa" && TYPE="ecdsa" BITS="-b 521";;
 esac
 # rsa bit selection
 if [[ "$TYPE" == "rsa" ]]; then
@@ -20,7 +20,7 @@ case $opt in
   4096|1) BITS="-b 4096";;
   2048|2) BITS="-b 2048";;
   1024|3) BITS="-b 1024";;
-  *) echo "blank or unkown option choosing 4096" && BITS="-b 4096";;
+  *) echo "blank or unknown option choosing 4096" && BITS="-b 4096";;
 esac
 fi
 
