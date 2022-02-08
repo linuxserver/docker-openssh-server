@@ -37,6 +37,9 @@ if [ ! -L /etc/ssh ];then
     ssh-keygen -A
 fi
 
+# include additional sshd_config files
+grep -qxF 'Include /etc/ssh/sshd_config.d/*.conf' /etc/ssh/sshd_config || echo 'Include /etc/ssh/sshd_config.d/*.conf' >> /etc/ssh/sshd_config
+
 # password access
 if [ "$PASSWORD_ACCESS" == "true" ]; then
     sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
