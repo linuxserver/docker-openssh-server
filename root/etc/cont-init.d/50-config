@@ -2,7 +2,7 @@
 
 # create folders
 mkdir -p \
-    /config/{.ssh,ssh_host_keys,logs/openssh}
+    /config/{.ssh,ssh_host_keys,sshd_config.d,logs/openssh,}
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 echo "User name is set to $USER_NAME"
