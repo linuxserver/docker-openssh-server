@@ -10,7 +10,7 @@ echo "User name is set to $USER_NAME"
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [ "$SUDO_ACCESS" == "true" ]; then
-    if [ -n "$USER_PASSWORD" ] || [ -n "$USER_PASSWORD_FILE" -a -f "$USER_PASSWORD_FILE" ]; then
+    if [ -n "$USER_PASSWORD" ] || [ -n "$USER_PASSWORD_FILE" ] && [ -f "$USER_PASSWORD_FILE" ]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
         echo "Sudo is enabled with password."
     else
@@ -23,7 +23,7 @@ fi
 [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]] && \
     USER_PASSWORD=$(cat "$USER_PASSWORD_FILE") && \
     echo "User password is retrieved from file."
-USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-8};echo;)}
+USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-8}";echo;)}
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
 # symlink out ssh config directory
@@ -61,12 +61,12 @@ if [ ! -f /config/.ssh/authorized_keys ];then
 fi
 
 [[ -n "$PUBLIC_KEY" ]] && \
-    [[ ! $(grep "$PUBLIC_KEY" /config/.ssh/authorized_keys) ]] && \
+    [[ ! $(grep "${PUBLIC_KEY}" /config/.ssh/authorized_keys) ]] && \
     echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys && \
     echo "Public key from env variable added"
 
 [[ -n "$PUBLIC_KEY_URL" ]] && \
-    PUBLIC_KEY_DOWNLOADED=$(curl -s $PUBLIC_KEY_URL) && \
+    PUBLIC_KEY_DOWNLOADED=$(curl -s "$PUBLIC_KEY_URL") && \
     [[ ! $(grep "$PUBLIC_KEY_DOWNLOADED" /config/.ssh/authorized_keys) ]] && \
     echo "$PUBLIC_KEY_DOWNLOADED" >> /config/.ssh/authorized_keys && \
     echo "Public key downloaded from '$PUBLIC_KEY_URL' added"   
