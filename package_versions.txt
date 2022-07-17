@@ -23,8 +23,8 @@ logrotate-3.18.1-r3
 musl-1.2.2-r7
 musl-utils-1.2.2-r7
 nano-5.9-r0
-ncurses-libs-6.3_p20211120-r0
-ncurses-terminfo-base-6.3_p20211120-r0
+ncurses-libs-6.3_p20211120-r1
+ncurses-terminfo-base-6.3_p20211120-r1
 nghttp2-libs-1.46.0-r0
 openssh-client-common-8.8_p1-r1
 openssh-client-default-8.8_p1-r1
