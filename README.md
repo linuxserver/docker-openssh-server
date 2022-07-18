@@ -283,6 +283,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **18.07.22:** - Fix service perms to comply with upgrade to s6 v3.
 * **16.04.22:** - Rebase to alpine 3.15.
 * **16.11.21:** - Add PUBLIC_KEY_URL option
 * **28.06.21:** - Rebasing to alpine 3.14. Add support for PAM.

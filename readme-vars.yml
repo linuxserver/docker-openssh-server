@@ -93,6 +93,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "18.07.22:", desc: "Fix service perms to comply with upgrade to s6 v3."}
   - { date: "16.04.22:", desc: "Rebase to alpine 3.15."}
   - { date: "16.11.21:", desc: "Add PUBLIC_KEY_URL option"}
   - { date: "28.06.21:", desc: "Rebasing to alpine 3.14. Add support for PAM." }
