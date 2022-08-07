@@ -4,8 +4,8 @@ apk-tools-2.12.7-r3
 bash-5.1.16-r0
 brotli-libs-1.0.9-r5
 busybox-1.34.1-r7
-ca-certificates-20211220-r0
-ca-certificates-bundle-20211220-r0
+ca-certificates-20220614-r0
+ca-certificates-bundle-20220614-r0
 coreutils-9.0-r2
 curl-7.80.0-r2
 libacl-2.2.53-r0
@@ -45,4 +45,4 @@ tzdata-2022a-r0
 utmps-0.1.0.3-r0
 xz-5.2.5-r1
 xz-libs-5.2.5-r1
-zlib-1.2.12-r1
+zlib-1.2.12-r2
