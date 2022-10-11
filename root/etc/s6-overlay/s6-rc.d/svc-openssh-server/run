@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+USER_NAME=${USER_NAME:-linuxserver.io}
+
+exec 2>&1 \
+    s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 2222" \
+        s6-setuidgid "${USER_NAME}" /usr/sbin/sshd.pam -D -e -p 2222
