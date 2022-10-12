@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 
+# shellcheck shell=bash
+
 # create folders
 mkdir -p \
     /config/{.ssh,ssh_host_keys,logs/openssh}
@@ -9,8 +11,8 @@ echo "User name is set to $USER_NAME"
 
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
-if [ "$SUDO_ACCESS" == "true" ]; then
-    if [ -n "$USER_PASSWORD" ] || [ -n "$USER_PASSWORD_FILE" ] && [ -f "$USER_PASSWORD_FILE" ]; then
+if [[ "$SUDO_ACCESS" == "true" ]]; then
+    if [[ -n "$USER_PASSWORD" ]] || [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
         echo "Sudo is enabled with password."
     else
@@ -20,14 +22,17 @@ if [ "$SUDO_ACCESS" == "true" ]; then
 else
     echo "Sudo is disabled."
 fi
-[[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]] && \
-    USER_PASSWORD=$(cat "$USER_PASSWORD_FILE") && \
+
+if [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]]; then
+    USER_PASSWORD=$(cat "$USER_PASSWORD_FILE")
     echo "User password is retrieved from file."
+fi
+
 USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-8}";echo;)}
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
 # symlink out ssh config directory
-if [ ! -L /etc/ssh ];then
+if [[ ! -L /etc/ssh ]]; then
     if [ ! -f /config/ssh_host_keys/sshd_config ]; then
         sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
         cp -a /etc/ssh/sshd_config /config/ssh_host_keys/
@@ -38,7 +43,7 @@ if [ ! -L /etc/ssh ];then
 fi
 
 # password access
-if [ "$PASSWORD_ACCESS" == "true" ]; then
+if [[ "$PASSWORD_ACCESS" == "true" ]]; then
     sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
     sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
     chown root:"${USER_NAME}" \
@@ -56,44 +61,53 @@ UMASK=${UMASK:-022}
 sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /etc/ssh/sshd_config
 
 # set key auth in file
-if [ ! -f /config/.ssh/authorized_keys ];then
+if [[ ! -f /config/.ssh/authorized_keys ]]; then
     touch /config/.ssh/authorized_keys
 fi
 
-[[ -n "$PUBLIC_KEY" ]] && \
-    [[ ! $(grep "${PUBLIC_KEY}" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys && \
-    echo "Public key from env variable added"
+if [[ -n "$PUBLIC_KEY" ]]; then
+    if ! grep -q "${PUBLIC_KEY}" /config/.ssh/authorized_keys; then
+        echo "$PUBLIC_KEY" >> /config/.ssh/authorized_keys
+        echo "Public key from env variable added"
+    fi
+fi
 
-[[ -n "$PUBLIC_KEY_URL" ]] && \
-    PUBLIC_KEY_DOWNLOADED=$(curl -s "$PUBLIC_KEY_URL") && \
-    [[ ! $(grep "$PUBLIC_KEY_DOWNLOADED" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY_DOWNLOADED" >> /config/.ssh/authorized_keys && \
-    echo "Public key downloaded from '$PUBLIC_KEY_URL' added"   
+if [[ -n "$PUBLIC_KEY_URL" ]]; then
+    PUBLIC_KEY_DOWNLOADED=$(curl -s "$PUBLIC_KEY_URL")
+    if ! grep -q "$PUBLIC_KEY_DOWNLOADED" /config/.ssh/authorized_keys; then
+        echo "$PUBLIC_KEY_DOWNLOADED" >> /config/.ssh/authorized_keys
+        echo "Public key downloaded from '$PUBLIC_KEY_URL' added"
+    fi
+fi
 
-[[ -n "$PUBLIC_KEY_FILE" ]] && [[ -f "$PUBLIC_KEY_FILE" ]] && \
-    PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE") && \
-    [[ ! $(grep "$PUBLIC_KEY2" /config/.ssh/authorized_keys) ]] && \
-    echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys && \
-    echo "Public key from file added"
+if [[ -n "$PUBLIC_KEY_FILE" ]] && [[ -f "$PUBLIC_KEY_FILE" ]]; then
+    PUBLIC_KEY2=$(cat "$PUBLIC_KEY_FILE")
+    if ! grep -q "$PUBLIC_KEY2" /config/.ssh/authorized_keys; then
+        echo "$PUBLIC_KEY2" >> /config/.ssh/authorized_keys
+        echo "Public key from file added"
+    fi
+fi
 
-if [ -d "$PUBLIC_KEY_DIR" ];then
-    for F in "${PUBLIC_KEY_DIR}"/*;do
-        PUBLIC_KEYN=$(cat "$F") && \
-        [[ ! $(grep "$PUBLIC_KEYN" /config/.ssh/authorized_keys) ]] && \
-        echo "$PUBLIC_KEYN" >> /config/.ssh/authorized_keys && \
-        echo "Public key from file '$F' added"
+if [[ -d "$PUBLIC_KEY_DIR" ]]; then
+    for F in "${PUBLIC_KEY_DIR}"/*; do
+        PUBLIC_KEYN=$(cat "$F")
+        if ! grep -q "$PUBLIC_KEYN" /config/.ssh/authorized_keys; then
+            echo "$PUBLIC_KEYN" >> /config/.ssh/authorized_keys
+            echo "Public key from file '$F' added"
+        fi
     done
 fi
 
 # back up old log files processed by logrotate
-[[ -f /config/logs/openssh/openssh.log ]] && \
-    mv /config/logs/openssh /config/logs/openssh.old.logs && \
+if [[ -f /config/logs/openssh/openssh.log ]]; then
+    mv /config/logs/openssh /config/logs/openssh.old.logs
     mkdir -p /config/logs/openssh
+fi
 
 # add log file info
-[[ ! -f /config/logs/loginfo.txt ]] && \
+if [[ ! -f /config/logs/loginfo.txt ]]; then
     echo "The current log file is named \"current\". The rotated log files are gzipped, named with a TAI64N timestamp and a \".s\" extension" > /config/logs/loginfo.txt
+fi
 
 # permissions
 chown -R "${USER_NAME}":"${USER_NAME}" \
