@@ -12,7 +12,7 @@ echo "User name is set to $USER_NAME"
 # set password for abc to unlock it and set sudo access
 sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [[ "$SUDO_ACCESS" == "true" ]]; then
-    if [[ -n "$USER_PASSWORD" ]] || [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]]; then
+    if [[ -n "$USER_PASSWORD" || (-n "$USER_PASSWORD_FILE" && -f "$USER_PASSWORD_FILE") ]]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
         echo "Sudo is enabled with password."
     else
