@@ -43,6 +43,7 @@ param_env_vars:
 opt_param_usage_include_env: true
 opt_param_env_vars:
   - { env_var: "PUBLIC_KEY", env_value: "yourpublickey", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
+  - { env_var: "OPENSSH_PORT", env_value: "2222", desc: "Optional ssh port used by the server ssh to listen ssh connections"}
   - { env_var: "PUBLIC_KEY_FILE", env_value: "/path/to/file", desc: "Optionally specify a file containing the public key (works with docker secrets)."}
   - { env_var: "PUBLIC_KEY_DIR", env_value: "/path/to/directory/containing/_only_/pubkeys", desc: "Optionally specify a directory containing the public keys (works with docker secrets)."}
   - { env_var: "PUBLIC_KEY_URL", env_value: "https://github.com/username.keys", desc: "Optionally specify a URL containing the public key."}
@@ -64,7 +65,9 @@ app_setup_block: |
   We provide the ability to set and allow password based access via the `PASSWORD_ACCESS` and `USER_PASSWORD` variables, though we as an organization discourage using password auth for public facing ssh endpoints.
 
   Connect to server via `ssh -i /path/to/private/key -p PORT USER_NAME@SERVERIP`
-
+  
+  The server ssh listens ssh connections at the port specified by `OPENSSH_PORT`. The default port used by the server is 2222.
+  
   Setting `SUDO_ACCESS` to `true` by itself will allow passwordless sudo. `USER_PASSWORD` and `USER_PASSWORD_FILE` allow setting an optional sudo password.
 
   The users only have access to the folders mapped and the processes running inside this container.
@@ -93,6 +96,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "31.10.22:", desc: "Adds the sshd port env"}
   - { date: "18.10.22:", desc: "Fix wrong behavior of password/passwordless sudo"}
   - { date: "11.10.22:", desc: "Rebase to Alpine 3.16, migrate to s6v3."}
   - { date: "15.09.22:", desc: "add netcat-openbsd with support for proxies."}
