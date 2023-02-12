@@ -58,7 +58,7 @@ The architectures supported by this image are:
 | :----: | :----: | ---- |
 | x86-64 | ✅ | amd64-\<version tag\> |
 | arm64 | ✅ | arm64v8-\<version tag\> |
-| armhf| ✅ | arm32v7-\<version tag\> |
+| armhf | ✅ | arm32v7-\<version tag\> |
 
 ## Application Setup
 
@@ -111,7 +111,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Etc/UTC
       - PUBLIC_KEY=yourpublickey #optional
       - PUBLIC_KEY_FILE=/path/to/file #optional
       - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional
@@ -136,7 +136,7 @@ docker run -d \
   --hostname=openssh-server `#optional` \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e TZ=Europe/London \
+  -e TZ=Etc/UTC \
   -e PUBLIC_KEY=yourpublickey `#optional` \
   -e PUBLIC_KEY_FILE=/path/to/file `#optional` \
   -e PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys `#optional` \
@@ -150,6 +150,7 @@ docker run -d \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/openssh-server:latest
+
 ```
 
 ## Parameters
@@ -162,7 +163,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 2222` | ssh port |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
-| `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London |
+| `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
 | `-e PUBLIC_KEY=yourpublickey` | Optional ssh public key, which will automatically be added to authorized_keys. |
 | `-e PUBLIC_KEY_FILE=/path/to/file` | Optionally specify a file containing the public key (works with docker secrets). |
 | `-e PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys` | Optionally specify a directory containing the public keys (works with docker secrets). |
