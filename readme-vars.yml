@@ -93,6 +93,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "05.03.23:", desc: "Rebase to Alpine 3.17."}
   - { date: "18.10.22:", desc: "Fix wrong behavior of password/passwordless sudo"}
   - { date: "11.10.22:", desc: "Rebase to Alpine 3.16, migrate to s6v3."}
   - { date: "15.09.22:", desc: "add netcat-openbsd with support for proxies."}

@@ -1,5 +1,4 @@
 #!/usr/bin/with-contenv bash
-
 # shellcheck shell=bash
 
 # create folders
@@ -33,7 +32,7 @@ echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
 # symlink out ssh config directory
 if [[ ! -L /etc/ssh ]]; then
-    if [ ! -f /config/ssh_host_keys/sshd_config ]; then
+    if [[ ! -f /config/ssh_host_keys/sshd_config ]]; then
         sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
         cp -a /etc/ssh/sshd_config /config/ssh_host_keys/
     fi
@@ -110,7 +109,7 @@ if [[ ! -f /config/logs/loginfo.txt ]]; then
 fi
 
 # permissions
-chown -R "${USER_NAME}":"${USER_NAME}" \
+lsiown -R "${USER_NAME}":"${USER_NAME}" \
     /config
 chmod go-w \
     /config
