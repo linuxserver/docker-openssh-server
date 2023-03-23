@@ -97,6 +97,16 @@ if [[ -d "$PUBLIC_KEY_DIR" ]]; then
     done
 fi
 
+# Enable TCP Forwarding
+if [[ "$TCP_FORWARDING" == "true" ]]; then
+    sed -i '/^#AllowTcpForwarding/c\AllowTcpForwarding yes' /etc/ssh/sshd_config
+    sed -i '/^AllowTcpForwarding/c\AllowTcpForwarding yes' /etc/ssh/sshd_config
+    echo "TCP Forwarding is enabled."
+else
+    sed -i '/^AllowTcpForwarding/c\AllowTcpForwarding no' /etc/ssh/sshd_config
+    echo "TCP Forwarding is disabled."
+fi
+
 # back up old log files processed by logrotate
 if [[ -f /config/logs/openssh/openssh.log ]]; then
     mv /config/logs/openssh /config/logs/openssh.old.logs

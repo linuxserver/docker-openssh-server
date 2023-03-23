@@ -51,6 +51,7 @@ opt_param_env_vars:
   - { env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
   - { env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
   - { env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
+  - { env_var: "TCP_FORWARDING", env_value: "false", desc: "Optionally enable TCP forwarding to allow the creation of SSH tunnels"}
 
 optional_block_1: false
 optional_block_1_items: ""
