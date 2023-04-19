@@ -13,13 +13,13 @@ sed -i "/${USER_NAME} ALL.*/d" /etc/sudoers
 if [[ "$SUDO_ACCESS" == "true" ]]; then
     if [[ -n "$USER_PASSWORD" || (-n "$USER_PASSWORD_FILE" && -f "$USER_PASSWORD_FILE") ]]; then
         echo "${USER_NAME} ALL=(ALL) ALL" >> /etc/sudoers
-        echo "Sudo is enabled with password."
+        echo "sudo is enabled with password."
     else
         echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-        echo "Sudo is enabled without password."
+        echo "sudo is enabled without password."
     fi
 else
-    echo "Sudo is disabled."
+    echo "sudo is disabled."
 fi
 
 if [[ -n "$USER_PASSWORD_FILE" ]] && [[ -f "$USER_PASSWORD_FILE" ]]; then
@@ -39,6 +39,17 @@ if [[ ! -L /etc/ssh ]]; then
     rm -Rf /etc/ssh
     ln -s /config/ssh_host_keys /etc/ssh
     ssh-keygen -A
+fi
+
+# custom port
+if [[ -n "${LISTEN_PORT}" ]]; then
+    sed -i "s/^#Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /etc/ssh/sshd_config
+    sed -i "s/^Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /etc/ssh/sshd_config
+    echo "sshd is listening on port ${LISTEN_PORT}"
+else
+    sed -i "s/^#Port [[:digit:]]\+/Port 2222"/ /etc/ssh/sshd_config
+    sed -i "s/^Port [[:digit:]]\+/Port 2222"/ /etc/ssh/sshd_config
+    echo "sshd is listening on port 2222"
 fi
 
 # password access

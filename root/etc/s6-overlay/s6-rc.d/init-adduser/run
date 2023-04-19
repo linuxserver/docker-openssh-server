@@ -34,21 +34,18 @@ User GID:    $(id -g "${USER_NAME}")
 ───────────────────────────────────────
 "
 
-time32="$(date +%Y)"
-
-if [[ "${time32}" == "1970" || "${time32}" == "1969" ]] && [ "$(uname -m)" == "armv7l" ]; then
+if [[ "$(uname -m)" == "armv7l" ]] || [[ "$(uname -m)" == "armhf" ]]; then
     echo '
-╔═════════════════════════════════════════════════════════════════════════════╗
-║                                                                             ║
-║        Your Docker Host is running an outdated version of libseccomp        ║
-║                                                                             ║
-║    To fix this, please visit https://docs.linuxserver.io/faq#libseccomp     ║
-║                                                                             ║
-║                 Apps will not behave correctly without this                 ║
-║                                                                             ║
-╚═════════════════════════════════════════════════════════════════════════════╝
+╔═════════════════════════════════════════════════════╗
+║                                                     ║
+║      The 32-bit Arm version of this image will      ║
+║       no longer be supported after 2023-07-01       ║
+║                                                     ║
+║          See: https://linuxserver.io/armhf          ║
+║                  for more details                   ║
+║                                                     ║
+╚═════════════════════════════════════════════════════╝
 '
-    sleep infinity
 fi
 
 lsiown "${USER_NAME}":"${USER_NAME}" /app
