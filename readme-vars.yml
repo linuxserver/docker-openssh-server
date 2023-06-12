@@ -4,25 +4,14 @@
 project_name: openssh-server
 project_url: "https://www.openssh.com/"
 project_logo: "https://upload.wikimedia.org/wikipedia/en/6/65/OpenSSH_logo.png"
-project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) is a sandboxed environment that allows ssh access without giving keys to the entire server.
-
-  Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
-
-  The users only have access to the folders mapped and the processes running inside this container."
-  
+project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) is a sandboxed environment that allows ssh access without giving keys to the entire server.\nGiving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.\nThe users only have access to the folders mapped and the processes running inside this container."
 project_lsio_github_repo_url: "https://github.com/linuxserver/docker-{{ project_name }}"
-
 # supported architectures
 available_architectures:
-  - { arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
-  - { arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
-  - { arch: "{{ arch_armhf }}", tag: "arm32v7-latest"}
-
+  - {arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
+  - {arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
 # development version
 development_versions: false
-development_versions_items:
-  - { tag: "latest", desc: "Stable releases" }
-
 # container parameters
 common_param_env_vars_enabled: true
 param_container_name: "{{ project_name }}"
@@ -31,30 +20,25 @@ param_hostname: "{{ project_name }}"
 param_hostname_desc: "Optionally the hostname can be defined."
 param_usage_include_vols: true
 param_volumes:
-  - { vol_path: "/config", vol_host_path: "/path/to/appdata/config", desc: "Contains all relevant configuration files." }
+  - {vol_path: "/config", vol_host_path: "/path/to/appdata/config", desc: "Contains all relevant configuration files."}
 param_usage_include_ports: true
 param_ports:
-  - { external_port: "2222", internal_port: "2222", port_desc: "ssh port" }
+  - {external_port: "2222", internal_port: "2222", port_desc: "ssh port"}
 param_usage_include_env: true
 param_env_vars:
-  - { env_var: "TZ", env_value: "Europe/London", desc: "Specify a timezone to use EG Europe/London"}
-
+  - {env_var: "TZ", env_value: "Europe/London", desc: "Specify a timezone to use EG Europe/London"}
 # optional container parameters
 opt_param_usage_include_env: true
 opt_param_env_vars:
-  - { env_var: "PUBLIC_KEY", env_value: "yourpublickey", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
-  - { env_var: "PUBLIC_KEY_FILE", env_value: "/path/to/file", desc: "Optionally specify a file containing the public key (works with docker secrets)."}
-  - { env_var: "PUBLIC_KEY_DIR", env_value: "/path/to/directory/containing/_only_/pubkeys", desc: "Optionally specify a directory containing the public keys (works with docker secrets)."}
-  - { env_var: "PUBLIC_KEY_URL", env_value: "https://github.com/username.keys", desc: "Optionally specify a URL containing the public key."}
-  - { env_var: "SUDO_ACCESS", env_value: "false", desc: "Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access."}
-  - { env_var: "PASSWORD_ACCESS", env_value: "false", desc: "Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well."}
-  - { env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
-  - { env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
-  - { env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
-
-optional_block_1: false
-optional_block_1_items: ""
-
+  - {env_var: "PUBLIC_KEY", env_value: "yourpublickey", desc: "Optional ssh public key, which will automatically be added to authorized_keys."}
+  - {env_var: "PUBLIC_KEY_FILE", env_value: "/path/to/file", desc: "Optionally specify a file containing the public key (works with docker secrets)."}
+  - {env_var: "PUBLIC_KEY_DIR", env_value: "/path/to/directory/containing/_only_/pubkeys", desc: "Optionally specify a directory containing the public keys (works with docker secrets)."}
+  - {env_var: "PUBLIC_KEY_URL", env_value: "https://github.com/username.keys", desc: "Optionally specify a URL containing the public key."}
+  - {env_var: "SUDO_ACCESS", env_value: "false", desc: "Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access."}
+  - {env_var: "PASSWORD_ACCESS", env_value: "false", desc: "Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well."}
+  - {env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
+  - {env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
+  - {env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
@@ -89,23 +73,22 @@ app_setup_block: |
 
   Then simply follow the prompts.
   The keys generated by this script are only displayed on your console output, so make sure to save them somewhere after generation.
-
-
 # changelog
 changelogs:
-  - { date: "05.03.23:", desc: "Rebase to Alpine 3.17."}
-  - { date: "18.10.22:", desc: "Fix wrong behavior of password/passwordless sudo"}
-  - { date: "11.10.22:", desc: "Rebase to Alpine 3.16, migrate to s6v3."}
-  - { date: "15.09.22:", desc: "add netcat-openbsd with support for proxies."}
-  - { date: "18.07.22:", desc: "Fix service perms to comply with upgrade to s6 v3."}
-  - { date: "16.04.22:", desc: "Rebase to alpine 3.15."}
-  - { date: "16.11.21:", desc: "Add PUBLIC_KEY_URL option"}
-  - { date: "28.06.21:", desc: "Rebasing to alpine 3.14. Add support for PAM." }
-  - { date: "10.02.21:", desc: "Rebasing to alpine 3.13. Add openssh-client for scp." }
-  - { date: "21.10.20:", desc: "Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban." }
-  - { date: "20.10.20:", desc: "Set umask for sftp." }
-  - { date: "01.06.20:", desc: "Rebasing to alpine 3.12." }
-  - { date: "18.01.20:", desc: "Add key generation script." }
-  - { date: "13.01.20:", desc: "Add openssh-sftp-server." }
-  - { date: "19.12.19:", desc: "Rebasing to alpine 3.11." }
-  - { date: "17.10.19:", desc: "Initial Release." }
+  - {date: "12.06.23:", desc: "Rebase to Alpine 3.18, deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)"}
+  - {date: "05.03.23:", desc: "Rebase to Alpine 3.17."}
+  - {date: "18.10.22:", desc: "Fix wrong behavior of password/passwordless sudo"}
+  - {date: "11.10.22:", desc: "Rebase to Alpine 3.16, migrate to s6v3."}
+  - {date: "15.09.22:", desc: "add netcat-openbsd with support for proxies."}
+  - {date: "18.07.22:", desc: "Fix service perms to comply with upgrade to s6 v3."}
+  - {date: "16.04.22:", desc: "Rebase to alpine 3.15."}
+  - {date: "16.11.21:", desc: "Add PUBLIC_KEY_URL option"}
+  - {date: "28.06.21:", desc: "Rebasing to alpine 3.14. Add support for PAM."}
+  - {date: "10.02.21:", desc: "Rebasing to alpine 3.13. Add openssh-client for scp."}
+  - {date: "21.10.20:", desc: "Implement s6-log for openssh, which adds local timestamps to logs and can be used with a log parser like fail2ban."}
+  - {date: "20.10.20:", desc: "Set umask for sftp."}
+  - {date: "01.06.20:", desc: "Rebasing to alpine 3.12."}
+  - {date: "18.01.20:", desc: "Add key generation script."}
+  - {date: "13.01.20:", desc: "Add openssh-sftp-server."}
+  - {date: "19.12.19:", desc: "Rebasing to alpine 3.11."}
+  - {date: "17.10.19:", desc: "Initial Release."}
