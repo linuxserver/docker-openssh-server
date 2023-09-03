@@ -24,7 +24,7 @@ libidn2                 2.3.4-r1          apk
 libintl                 0.21.1-r7         apk   
 libmd                   1.0.4-r2          apk   
 libncursesw             6.4_p20230506-r0  apk   
-libproc2                4.0.3-r1          apk   
+libproc2                4.0.4-r0          apk   
 libssl3                 3.1.2-r0          apk   
 libunistring            1.1-r1            apk   
 linux-pam               1.5.2-r10         apk   
@@ -43,7 +43,7 @@ openssh-server-common   9.3_p2-r0         apk
 openssh-server-pam      9.3_p2-r0         apk   
 openssh-sftp-server     9.3_p2-r0         apk   
 popt                    1.19-r2           apk   
-procps-ng               4.0.3-r1          apk   
+procps-ng               4.0.4-r0          apk   
 readline                8.2.1-r1          apk   
 scanelf                 1.3.7-r1          apk   
 shadow                  4.13-r4           apk   
