@@ -39,6 +39,7 @@ opt_param_env_vars:
   - {env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
   - {env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
   - {env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
+  - {env_var: "LOG_STDOUT", env_value: "", desc: "Set to `true` to log to stdout instead of file."}
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
