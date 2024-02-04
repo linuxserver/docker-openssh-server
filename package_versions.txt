@@ -50,6 +50,6 @@ shadow                  4.13-r4           apk
 skalibs                 2.13.1.1-r1       apk   
 ssl_client              1.36.1-r5         apk   
 sudo                    1.9.13_p3-r2      apk   
-tzdata                  2023d-r0          apk   
+tzdata                  2024a-r0          apk   
 utmps-libs              0.1.2.1-r1        apk   
 zlib                    1.2.13-r1         apk   
