@@ -17,7 +17,7 @@ repo_vars:
   - PR_DOCKERHUB_IMAGE = 'lspipepr/openssh-server'
   - DIST_IMAGE = 'alpine'
   - DIST_TAG = '3.18'
-  - DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.18/main/'
+  - DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.19/main/'
   - DIST_REPO_PACKAGES = 'openssh-server-pam'
   - MULTIARCH='true'
   - CI='true'
