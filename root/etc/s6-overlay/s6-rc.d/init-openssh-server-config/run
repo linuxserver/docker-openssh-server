@@ -41,6 +41,10 @@ if [[ ! -L /etc/ssh ]]; then
     ssh-keygen -A
 fi
 
+# display SSH host public key(s)
+echo "SSH host public key(s):"
+cat /etc/ssh/ssh_host_*.pub
+
 # custom port
 if [[ -n "${LISTEN_PORT}" ]]; then
     sed -i "s/^#Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /etc/ssh/sshd_config
