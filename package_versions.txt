@@ -21,7 +21,7 @@ libacl                  2.3.1-r4              apk
 libattr                 2.5.1-r5              apk     
 libbsd                  0.11.7-r3             apk     
 libc-utils              0.7.2-r5              apk     
-libcrypto3              3.1.4-r5              apk     
+libcrypto3              3.1.4-r6              apk     
 libcurl                 8.5.0-r0              apk     
 libedit                 20230828.3.1-r3       apk     
 libidn2                 2.3.4-r4              apk     
@@ -29,7 +29,7 @@ libintl                 0.22.3-r0             apk
 libmd                   1.1.0-r0              apk     
 libncursesw             6.4_p20231125-r0      apk     
 libproc2                4.0.4-r0              apk     
-libssl3                 3.1.4-r5              apk     
+libssl3                 3.1.4-r6              apk     
 libunistring            1.1-r2                apk     
 linux-pam               1.5.3-r7              apk     
 logrotate               3.21.0-r1             apk     
