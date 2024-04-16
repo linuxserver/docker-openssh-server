@@ -40,6 +40,7 @@ opt_param_env_vars:
   - {env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
   - {env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
   - {env_var: "LOG_STDOUT", env_value: "", desc: "Set to `true` to log to stdout instead of file."}
+  - {env_var: "LISTEN_PORT", env_value: "", desc: "Optionally change the port that openssh-server listens on. (Default:`2222`)"}
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
