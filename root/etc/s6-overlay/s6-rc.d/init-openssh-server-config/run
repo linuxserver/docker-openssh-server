@@ -43,7 +43,7 @@ fi
 
 # display SSH host public key(s)
 echo "SSH host public key(s):"
-cat /etc/ssh/ssh_host_*.pub
+cat /config/ssh_host_keys/ssh_host_*.pub
 
 # custom port
 if [[ -n "${LISTEN_PORT}" ]]; then
