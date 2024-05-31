@@ -31,21 +31,12 @@ GID/UID
 echo "
 User UID:    $(id -u "${USER_NAME}")
 User GID:    $(id -g "${USER_NAME}")
-───────────────────────────────────────
-"
-
-if [[ "$(uname -m)" == "armv7l" ]] || [[ "$(uname -m)" == "armhf" ]]; then
+───────────────────────────────────────"
+if [[ -f /build_version ]]; then
+    cat /build_version
     echo '
-╔═════════════════════════════════════════════════════╗
-║                                                     ║
-║      The 32-bit Arm version of this image will      ║
-║       no longer be supported after 2023-07-01       ║
-║                                                     ║
-║          See: https://linuxserver.io/armhf          ║
-║                  for more details                   ║
-║                                                     ║
-╚═════════════════════════════════════════════════════╝
-'
+───────────────────────────────────────
+    '
 fi
 
 lsiown "${USER_NAME}":"${USER_NAME}" /app
