@@ -26,7 +26,7 @@ pipeline {
     PR_DOCKERHUB_IMAGE = 'lspipepr/openssh-server'
     DIST_IMAGE = 'alpine'
     DIST_TAG = '3.18'
-    DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.19/main/'
+    DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.20/main/'
     DIST_REPO_PACKAGES = 'openssh-server-pam'
     MULTIARCH='true'
     CI='true'
@@ -34,8 +34,8 @@ pipeline {
     CI_PORT='80'
     CI_SSL='false'
     CI_DELAY='60'
-    CI_DOCKERENV='TZ=US/Pacific'
-    CI_AUTH='user:password'
+    CI_DOCKERENV=''
+    CI_AUTH=''
     CI_WEBPATH=''
   }
   stages {

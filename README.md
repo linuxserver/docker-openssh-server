@@ -121,7 +121,7 @@ services:
       - USER_NAME=linuxserver.io #optional
       - LOG_STDOUT= #optional
     volumes:
-      - /path/to/appdata/config:/config
+      - /path/to/openssh-server/config:/config
     ports:
       - 2222:2222
     restart: unless-stopped
@@ -147,7 +147,7 @@ docker run -d \
   -e USER_NAME=linuxserver.io `#optional` \
   -e LOG_STDOUT= `#optional` \
   -p 2222:2222 \
-  -v /path/to/appdata/config:/config \
+  -v /path/to/openssh-server/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/openssh-server:latest
 ```
@@ -336,6 +336,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **31.05.24:** - Rebase to Alpine 3.20.
 * **04.05.24:** - Display the SSH host public keys every time the container starts.
 * **09.03.24:** - Rebase to Alpine 3.19.
 * **12.06.23:** - Rebase to Alpine 3.18, deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
