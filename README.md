@@ -171,6 +171,11 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e PASSWORD_ACCESS=false` | Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well. |
 | `-e USER_PASSWORD=password` | Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
 | `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
+| `-e TRUSTED_USER_CA_KEYS=yourtrustedcakeys` | Optionally trusted user CA keys, which will automatically be added to trusted user CA keys. |
+| `-e TRUSTED_USER_CA_KEYS_FILE=/path/to/file` | Optionally specify a file containing the trusted user CA keys (works with docker secrets). |
+| `-e AUTHORIZED_PRINCIPALS=` | Optionally specify a list of authorized principals. Space-separated list. |
+| `-e AUTHORIZED_PRINCIPALS_FILE=/path/to/file` | Optionally specify a file containing a list of authorized principals. |
+| `-e ADD_DEFAULT_USER_TO_AUTHORIZED_PRINCIPALS=false` | Set to `true` to add the default user to the list of authorized principals. |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
 | `-e LOG_STDOUT=` | Set to `true` to log to stdout instead of file. |
 | `-v /config` | Contains all relevant configuration files. |

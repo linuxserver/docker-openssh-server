@@ -142,19 +142,17 @@ fi
 # set authorized principals
 if [[ -n "$AUTHORIZED_PRINCIPALS" ]]; then
     touch /config/.ssh/authorized_principals
-    if ! grep -q "${AUTHORIZED_PRINCIPALS}" /config/.ssh/authorized_principals; then
-        echo "$AUTHORIZED_PRINCIPALS" >> /config/.ssh/authorized_principals
-        echo "Authorized principals added"
-    fi
+
+    for principal in $AUTHORIZED_PRINCIPALS; do
+        echo "$principal" >> /config/.ssh/authorized_principals
+        echo "add $principal Authorized principals added"
+    done
 fi
 
 if [[ -n "$AUTHORIZED_PRINCIPALS_FILE" ]] && [[ -f "$AUTHORIZED_PRINCIPALS_FILE" ]]; then
     touch /config/.ssh/authorized_principals
-    AUTHORIZED_PRINCIPALS2=$(cat "$AUTHORIZED_PRINCIPALS_FILE")
-    if ! grep -q "$AUTHORIZED_PRINCIPALS2" /config/.ssh/authorized_principals; then
-        echo "$AUTHORIZED_PRINCIPALS2" >> /config/.ssh/authorized_principals
-        echo "Authorized principals from file added"
-    fi
+    cat $AUTHORIZED_PRINCIPALS_FILE >> /config/.ssh/authorized_principals
+    echo "Authorized principals from file added"
 fi
 
 if [[ "$ADD_DEFAULT_USER_TO_AUTHORIZED_PRINCIPALS" == "true" ]]; then
