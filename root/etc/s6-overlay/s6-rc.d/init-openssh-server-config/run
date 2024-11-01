@@ -112,6 +112,66 @@ if [[ -d "$PUBLIC_KEY_DIR" ]]; then
     done
 fi
 
+# set trusted user CA keys
+if [[ -n "$TRUSTED_USER_CA_KEYS" ]]; then
+    touch /config/.ssh/trusted_user_ca_keys
+    if ! grep -q "${TRUSTED_USER_CA_KEYS}" /config/.ssh/trusted_user_ca_keys; then
+        echo "$TRUSTED_USER_CA_KEYS" >> /config/.ssh/trusted_user_ca_keys
+        echo "Trusted user CA keys added"
+    fi
+fi
+
+if [[ -n "$TRUSTED_USER_CA_KEYS_FILE" ]] && [[ -f "$TRUSTED_USER_CA_KEYS_FILE" ]]; then
+    touch /config/.ssh/trusted_user_ca_keys
+    TRUSTED_USER_CA_KEYS2=$(cat "$TRUSTED_USER_CA_KEYS_FILE")
+    if ! grep -q "$TRUSTED_USER_CA_KEYS2" /config/.ssh/trusted_user_ca_keys; then
+        echo "$TRUSTED_USER_CA_KEYS2" >> /config/.ssh/trusted_user_ca_keys
+        echo "Trusted user CA keys from file added"
+    fi
+fi
+
+if [[ -f /config/.ssh/trusted_user_ca_keys ]]; then
+    if ! grep -q "^TrustedUserCAKeys" /etc/ssh/sshd_config; then
+        echo "TrustedUserCAKeys /config/.ssh/trusted_user_ca_keys" >> /etc/ssh/sshd_config
+    else
+        sed -i '/^#TrustedUserCAKeys/c\TrustedUserCAKeys /config/.ssh/trusted_user_ca_keys' /etc/ssh/sshd_config
+        sed -i '/^TrustedUserCAKeys/c\TrustedUserCAKeys /config/.ssh/trusted_user_ca_keys' /etc/ssh/sshd_config
+    fi
+fi
+
+# set authorized principals
+if [[ -n "$AUTHORIZED_PRINCIPALS" ]]; then
+    touch /config/.ssh/authorized_principals
+    if ! grep -q "${AUTHORIZED_PRINCIPALS}" /config/.ssh/authorized_principals; then
+        echo "$AUTHORIZED_PRINCIPALS" >> /config/.ssh/authorized_principals
+        echo "Authorized principals added"
+    fi
+fi
+
+if [[ -n "$AUTHORIZED_PRINCIPALS_FILE" ]] && [[ -f "$AUTHORIZED_PRINCIPALS_FILE" ]]; then
+    touch /config/.ssh/authorized_principals
+    AUTHORIZED_PRINCIPALS2=$(cat "$AUTHORIZED_PRINCIPALS_FILE")
+    if ! grep -q "$AUTHORIZED_PRINCIPALS2" /config/.ssh/authorized_principals; then
+        echo "$AUTHORIZED_PRINCIPALS2" >> /config/.ssh/authorized_principals
+        echo "Authorized principals from file added"
+    fi
+fi
+
+if [[ "$ADD_DEFAULT_USER_TO_AUTHORIZED_PRINCIPALS" == "true" ]]; then
+    touch /config/.ssh/authorized_principals
+    echo "$USER_NAME" > /config/.ssh/authorized_principals
+    echo "$USER_NAME added to Authorized principals"
+fi
+
+if [[ -f /config/.ssh/authorized_principals ]]; then
+    if ! grep -q "^AuthorizedPrincipalsFile" /etc/ssh/sshd_config; then
+        echo "AuthorizedPrincipalsFile /config/.ssh/authorized_principals" >> /etc/ssh/sshd_config
+    else
+        sed -i '/^#AuthorizedPrincipalsFile/c\AuthorizedPrincipalsFile /config/.ssh/authorized_principals' /etc/ssh/sshd_config
+        sed -i '/^AuthorizedPrincipalsFile/c\AuthorizedPrincipalsFile /config/.ssh/authorized_principals' /etc/ssh/sshd_config
+    fi
+fi
+
 # back up old log files processed by logrotate
 if [[ -f /config/logs/openssh/openssh.log ]]; then
     mv /config/logs/openssh /config/logs/openssh.old.logs
