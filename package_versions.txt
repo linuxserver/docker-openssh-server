@@ -28,7 +28,7 @@ libedit                 20240517.3.1-r0   apk
 libidn2                 2.3.7-r0          apk     
 libintl                 0.22.5-r0         apk     
 libmd                   1.1.0-r0          apk     
-libncursesw             6.4_p20240420-r1  apk     
+libncursesw             6.4_p20240420-r2  apk     
 libproc2                4.0.4-r0          apk     
 libpsl                  0.21.5-r1         apk     
 libssl3                 3.3.2-r0          apk     
@@ -38,7 +38,7 @@ logrotate               3.21.0-r1         apk
 musl                    1.2.5-r0          apk     
 musl-utils              1.2.5-r0          apk     
 nano                    8.0-r0            apk     
-ncurses-terminfo-base   6.4_p20240420-r1  apk     
+ncurses-terminfo-base   6.4_p20240420-r2  apk     
 netcat-openbsd          1.226-r0          apk     
 nghttp2-libs            1.62.1-r0         apk     
 oniguruma               6.9.9-r0          apk     
