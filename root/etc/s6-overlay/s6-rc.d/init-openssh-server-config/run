@@ -132,3 +132,5 @@ chmod 700 \
     /config/.ssh
 chmod 600 \
     /config/.ssh/authorized_keys
+chown root:root \
+    /config/ssh_host_keys
