@@ -2,14 +2,14 @@
 
 # selection menu
 echo "Please select your key type to generate"
-printf "1.) ecdsa\n2.) rsa\n3.) ed25519\n4.) dsa\n[default ecdsa]:"
+printf "1.) ed25519\n2.) rsa\n3.) ecdsa\n4.) dsa\n[default ed25519]:"
 read opt
 case $opt in
-    "ecdsa"|1) TYPE="ecdsa" BITS="-b 521";;
+    "ed25519"|1) TYPE="ed25519";;
     "rsa"|2) TYPE="rsa";;
-    "ed25519"|3) TYPE="ed25519";;
+    "ecdsa"|3) TYPE="ecdsa" BITS="-b 521";;
     "dsa"|4) TYPE="dsa";;
-    *) echo "blank or unknown option choosing ecdsa" && TYPE="ecdsa" BITS="-b 521";;
+    *) echo "blank or unknown option choosing ed25519" && TYPE="ed25519";;
 esac
 # rsa bit selection
 if [[ "$TYPE" == "rsa" ]]; then
