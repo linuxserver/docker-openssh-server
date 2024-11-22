@@ -25,5 +25,7 @@ if [[ "$TYPE" == "rsa" ]]; then
 fi
 
 # key generation
-echo "YOUR KEY/PUBFILE IS BELOW PLEASE SAVE THIS DATA AS WE WILL NOT"
+echo ""
+echo "YOUR KEYS ARE BELOW. PLEASE TAKE A COPY OF THEM AS THEY WILL NOT PERSIST ONCE THIS TERMINAL IS CLOSED."
+echo ""
 echo /tmp/stderr{,.pub} | xargs -n 1 ln -sf /dev/stderr && yes | ssh-keygen -t ${TYPE} ${BITS} -N '' -qf /tmp/stderr > /dev/null
