@@ -134,9 +134,9 @@ chmod 600 \
     /config/.ssh/authorized_keys
 
 # ssh_host_keys permissions
-lsiown -R root:root \
+lsiown -R root:"${USER_NAME}" \
     /config/ssh_host_keys
-chmod 755 \
+chmod 750 \
     /config/ssh_host_keys
-chmod 644 \
+chmod 640 \
     /config/ssh_host_keys/*
