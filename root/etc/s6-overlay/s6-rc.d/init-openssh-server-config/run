@@ -139,6 +139,4 @@ lsiown -R root:root \
 chmod 755 \
     /config/ssh_host_keys
 chmod 644 \
-    /config/ssh_host_keys/sshd_config \
-    /config/ssh_host_keys/*.pub
-find /config/ssh_host_keys/ -name "ssh_host_*_key" -exec chmod 600 {} \;
+    /config/ssh_host_keys/*
