@@ -132,5 +132,13 @@ chmod 700 \
     /config/.ssh
 chmod 600 \
     /config/.ssh/authorized_keys
-chown root:root \
+
+# ssh_host_keys permissions
+lsiown -R root:root \
     /config/ssh_host_keys
+chmod 755 \
+    /config/ssh_host_keys
+chmod 644 \
+    /config/ssh_host_keys/sshd_config \
+    /config/ssh_host_keys/*.pub
+find /config/ssh_host_keys/ -name "ssh_host_*_key" -exec chmod 600 {} \;
