@@ -338,6 +338,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **24.11.24:** - Move sshd_config to /config/sshd/sshd_config.
 * **31.05.24:** - Rebase to Alpine 3.20.
 * **04.05.24:** - Display the SSH host public keys every time the container starts.
 * **09.03.24:** - Rebase to Alpine 3.19.
