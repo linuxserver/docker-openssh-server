@@ -35,8 +35,8 @@ if [[ -f /config/ssh_host_keys/sshd_config ]]; then
     mv /config/ssh_host_keys/sshd_config /config/sshd/sshd_config
     sed -i 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/' /config/sshd/sshd_config
     echo "This file has been moved to /config/sshd/sshd_config" > /config/ssh_host_keys/sshd_config_README
-    chmod 600 /config/sshd/sshd_config/ssh_host_*_key
-    chmod 644 /config/sshd/sshd_config/ssh_host_*_key.pub
+    chmod 600 /config/ssh_host_keys/ssh_host_*_key
+    chmod 644 /config/ssh_host_keys/ssh_host_*_key.pub
 fi
 
 if [[ ! -f /config/sshd/sshd_config ]]; then
