@@ -88,23 +88,19 @@ init_diagram: |
     init-migrations -> init-adduser
     init-os-end -> init-config
     init-config -> init-config-end
+    init-crontab-config -> init-config-end
     init-openssh-server-config -> init-config-end
-    init-os-end -> init-crontab-config
+    init-config -> init-crontab-config
     init-mods-end -> init-custom-files
     base -> init-envfile
     base -> init-migrations
-    base -> init-mods
     init-config-end -> init-mods
-    init-mods -> init-mods-end
     init-mods-package-install -> init-mods-end
     init-mods -> init-mods-package-install
     init-config -> init-openssh-server-config
-    base -> init-os-end
     init-adduser -> init-os-end
     init-envfile -> init-os-end
-    init-migrations -> init-os-end
     init-custom-files -> init-services
-    init-mods-end -> init-services
     init-openssh-server-config -> log-openssh-server
     init-services -> log-openssh-server
     init-services -> svc-cron
@@ -113,7 +109,7 @@ init_diagram: |
     svc-openssh-server -> legacy-services
   }
   Base Images: {
-    "baseimage-alpine:3.20"
+    "baseimage-alpine:3.21"
   }
   "openssh-server:latest" <- Base Images
 # changelog
