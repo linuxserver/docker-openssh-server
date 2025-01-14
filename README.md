@@ -43,7 +43,7 @@ Find us at:
 Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
 The users only have access to the folders mapped and the processes running inside this container.
 
-[![openssh-server](https://upload.wikimedia.org/wikipedia/en/6/65/OpenSSH_logo.png)](https://www.openssh.com/)
+[![openssh-server](https://raw.githubusercontent.com/linuxserver/docker-templates/blob/master/linuxserver.io/img/openssh-server-logo.png)](https://www.openssh.com/)
 
 ## Supported Architectures
 
@@ -340,6 +340,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **12.01.25:** - Rebase to Alpine 3.21.
 * **24.11.24:** - Move sshd_config to /config/sshd/sshd_config.
 * **31.05.24:** - Rebase to Alpine 3.20.
 * **04.05.24:** - Display the SSH host public keys every time the container starts.
