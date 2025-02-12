@@ -3,7 +3,7 @@
 
 # create folders
 mkdir -p \
-    /config/{.ssh,ssh_host_keys,logs/openssh}
+    /config/{.ssh,logs/openssh,sshd}
 
 USER_NAME=${USER_NAME:-linuxserver.io}
 echo "User name is set to $USER_NAME"
@@ -30,15 +30,25 @@ fi
 USER_PASSWORD=${USER_PASSWORD:-$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-8}";echo;)}
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
-# symlink out ssh config directory
-if [[ ! -L /etc/ssh ]]; then
-    if [[ ! -f /config/ssh_host_keys/sshd_config ]]; then
-        sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
-        cp -a /etc/ssh/sshd_config /config/ssh_host_keys/
-    fi
-    rm -Rf /etc/ssh
-    ln -s /config/ssh_host_keys /etc/ssh
+# Migration
+if [[ -f /config/ssh_host_keys/sshd_config ]]; then
+    mv /config/ssh_host_keys/sshd_config /config/sshd/sshd_config
+    sed -i 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/' /config/sshd/sshd_config
+    echo "This file has been moved to /config/sshd/sshd_config" > /config/ssh_host_keys/sshd_config_README
+    chmod 600 /config/ssh_host_keys/ssh_host_*_key
+    chmod 644 /config/ssh_host_keys/ssh_host_*_key.pub
+fi
+
+if [[ ! -f /config/sshd/sshd_config ]]; then
+    sed -i '/#PidFile/c\PidFile \/config\/sshd.pid' /etc/ssh/sshd_config
+    sed -i 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/#Include \/etc\/ssh\/sshd_config.d\/\*.conf/' /etc/ssh/sshd_config
+    cp -a /etc/ssh/sshd_config /config/sshd/sshd_config
+fi
+
+if [[ ! -d /config/ssh_host_keys ]]; then
+    mkdir -p /config/ssh_host_keys
     ssh-keygen -A
+    cp /etc/ssh/ssh_host_* /config/ssh_host_keys
 fi
 
 # display SSH host public key(s)
@@ -47,24 +57,24 @@ cat /config/ssh_host_keys/ssh_host_*.pub
 
 # custom port
 if [[ -n "${LISTEN_PORT}" ]]; then
-    sed -i "s/^#Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /etc/ssh/sshd_config
-    sed -i "s/^Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /etc/ssh/sshd_config
+    sed -i "s/^#Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /config/sshd/sshd_config
+    sed -i "s/^Port [[:digit:]]\+/Port ${LISTEN_PORT}"/ /config/sshd/sshd_config
     echo "sshd is listening on port ${LISTEN_PORT}"
 else
-    sed -i "s/^#Port [[:digit:]]\+/Port 2222"/ /etc/ssh/sshd_config
-    sed -i "s/^Port [[:digit:]]\+/Port 2222"/ /etc/ssh/sshd_config
+    sed -i "s/^#Port [[:digit:]]\+/Port 2222"/ /config/sshd/sshd_config
+    sed -i "s/^Port [[:digit:]]\+/Port 2222"/ /config/sshd/sshd_config
     echo "sshd is listening on port 2222"
 fi
 
 # password access
 if [[ "$PASSWORD_ACCESS" == "true" ]]; then
-    sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
-    sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /etc/ssh/sshd_config
+    sed -i '/^#PasswordAuthentication/c\PasswordAuthentication yes' /config/sshd/sshd_config
+    sed -i '/^PasswordAuthentication/c\PasswordAuthentication yes' /config/sshd/sshd_config
     chown root:"${USER_NAME}" \
         /etc/shadow
     echo "User/password ssh access is enabled."
 else
-    sed -i '/^PasswordAuthentication/c\PasswordAuthentication no' /etc/ssh/sshd_config
+    sed -i '/^PasswordAuthentication/c\PasswordAuthentication no' /config/sshd/sshd_config
     chown root:root \
         /etc/shadow
     echo "User/password ssh access is disabled."
@@ -72,7 +82,7 @@ fi
 
 # set umask for sftp
 UMASK=${UMASK:-022}
-sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /etc/ssh/sshd_config
+sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /config/sshd/sshd_config
 
 # set key auth in file
 if [[ ! -f /config/.ssh/authorized_keys ]]; then
@@ -190,3 +200,10 @@ chmod 700 \
     /config/.ssh
 chmod 600 \
     /config/.ssh/authorized_keys
+
+lsiown -R root:"${USER_NAME}" \
+    /config/sshd
+chmod 750 \
+    /config/sshd
+chmod 640 \
+    /config/sshd/sshd_config
