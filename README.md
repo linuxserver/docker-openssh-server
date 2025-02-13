@@ -340,6 +340,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **10.02.25:** - Add support for sshd_config.d
 * **12.01.25:** - Rebase to Alpine 3.21.
 * **24.11.24:** - Move sshd_config to /config/sshd/sshd_config.
 * **31.05.24:** - Rebase to Alpine 3.20.

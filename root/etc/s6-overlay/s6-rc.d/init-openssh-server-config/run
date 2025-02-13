@@ -51,6 +51,12 @@ if [[ ! -d /config/ssh_host_keys ]]; then
     cp /etc/ssh/ssh_host_* /config/ssh_host_keys
 fi
 
+# Enable sshd_config.d if mounted 
+if [[ -d /config/sshd/sshd_config.d ]]; then 
+    sed -i 's/Include \/etc\/ssh\/sshd_config.d\/\*.conf/Include \/config\/sshd\/sshd_config.d\/\*.conf/' /config/sshd/sshd_config 
+    sed -i '/Include \/config\/sshd\/sshd_config.d/s/^#*//' /config/sshd/sshd_config 
+fi
+
 # display SSH host public key(s)
 echo "SSH host public key(s):"
 cat /config/ssh_host_keys/ssh_host_*.pub
