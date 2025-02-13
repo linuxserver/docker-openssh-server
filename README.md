@@ -43,7 +43,7 @@ Find us at:
 Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
 The users only have access to the folders mapped and the processes running inside this container.
 
-[![openssh-server](https://raw.githubusercontent.com/linuxserver/docker-templates/blob/master/linuxserver.io/img/openssh-server-logo.png)](https://www.openssh.com/)
+[![openssh-server](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/openssh-server-logo.png)](https://www.openssh.com/)
 
 ## Supported Architectures
 
