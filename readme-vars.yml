@@ -117,6 +117,7 @@ init_diagram: |
   "openssh-server:latest" <- Base Images
 # changelog
 changelogs:
+  - {date: "05.07.25:", desc: "Rebase to Alpine 3.22."}
   - {date: "10.02.25:", desc: "Add support for sshd_config.d"}
   - {date: "12.01.25:", desc: "Rebase to Alpine 3.21."}
   - {date: "24.11.24:", desc: "Move sshd_config to /config/sshd/sshd_config."}
