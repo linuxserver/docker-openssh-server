@@ -112,7 +112,7 @@ init_diagram: |
     svc-openssh-server -> legacy-services
   }
   Base Images: {
-    "baseimage-alpine:3.21"
+    "baseimage-alpine:3.22"
   }
   "openssh-server:latest" <- Base Images
 # changelog
