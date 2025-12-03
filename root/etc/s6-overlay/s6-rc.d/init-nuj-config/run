@@ -2,6 +2,5 @@
 # shellcheck shell=bash
 
 echo "running nuj stuff"
-echo "$env"
-aws sts get-caller-identity
 aws s3 sync s3://"${CONFIG_BUCKET}" /config
+echo "nuj config applied"
