@@ -9,4 +9,5 @@ on:
 
 jobs:
   permission_check:
+    if: github.repository != NujSuper/docker-openssh-server
     uses: linuxserver/github-workflows/.github/workflows/init-svc-executable-permissions.yml@v1
