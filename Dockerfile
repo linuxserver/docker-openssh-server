@@ -22,6 +22,7 @@ RUN \
     awk '/^P:openssh-server-pam$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
   fi && \
   apk add --no-cache \
+    aws-cli \
     openssh-client==${OPENSSH_RELEASE} \
     openssh-server-pam==${OPENSSH_RELEASE} \
     openssh-sftp-server==${OPENSSH_RELEASE} && \
