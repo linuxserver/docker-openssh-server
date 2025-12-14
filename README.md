@@ -80,6 +80,19 @@ It is also possible to run multiple copies of this container with different port
 You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.
 You can optionally set the docker argument `hostname`
 
+## Socat Forwarding
+
+This image includes `socat` which can be used to forward a local port to a remote address. This is disabled by default.
+To enable it, set `SOCAT_ENABLED=true` and configure the following variables:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `SOCAT_ENABLED` | `false` | Set to `true` to enable the service. |
+| `SOCAT_LISTEN_PORT` | `43388` | The port to listen on within the container. |
+| `SOCAT_TARGET_HOST` | `localhost` | The target host to forward traffic to. |
+| `SOCAT_TARGET_PORT` | `43389` | The target port on the target host. |
+| `SOCAT_LOG_LEVEL` | `-ddd` | Socat log level (e.g., `-d`, `-dd`, `-ddd`). |
+
 ## Key Generation
 
 This container has a helper script to generate an ssh private/public key. In order to generate a key please run:
@@ -120,6 +133,11 @@ services:
       - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=linuxserver.io #optional
       - LOG_STDOUT= #optional
+      - SOCAT_ENABLED=false #optional
+      - SOCAT_LISTEN_PORT=43388 #optional
+      - SOCAT_TARGET_HOST=localhost #optional
+      - SOCAT_TARGET_PORT=43389 #optional
+      - SOCAT_LOG_LEVEL=-ddd #optional
     volumes:
       - /path/to/openssh-server/config:/config
     ports:
@@ -146,6 +164,11 @@ docker run -d \
   -e USER_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
   -e LOG_STDOUT= `#optional` \
+  -e SOCAT_ENABLED=false `#optional` \
+  -e SOCAT_LISTEN_PORT=43388 `#optional` \
+  -e SOCAT_TARGET_HOST=localhost `#optional` \
+  -e SOCAT_TARGET_PORT=43389 `#optional` \
+  -e SOCAT_LOG_LEVEL=-ddd `#optional` \
   -p 2222:2222 \
   -v /path/to/openssh-server/config:/config \
   --restart unless-stopped \
@@ -173,6 +196,11 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
 | `-e LOG_STDOUT=` | Set to `true` to log to stdout instead of file. |
+| `-e SOCAT_ENABLED=false` | Set to `true` to enable socat forwarding. |
+| `-e SOCAT_LISTEN_PORT=43388` | Port socat listens on inside the container. |
+| `-e SOCAT_TARGET_HOST=localhost` | Target host for socat forwarding. |
+| `-e SOCAT_TARGET_PORT=43389` | Target port for socat forwarding. |
+| `-e SOCAT_LOG_LEVEL=-ddd` | Socat log level. |
 | `-v /config` | Contains all relevant configuration files. |
 
 ## Environment variables from files (Docker secrets)
