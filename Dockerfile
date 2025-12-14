@@ -15,6 +15,7 @@ RUN \
     logrotate \
     nano \
     netcat-openbsd \
+    socat \
     sudo && \
   echo "**** install openssh-server ****" && \
   if [ -z ${OPENSSH_RELEASE+x} ]; then \

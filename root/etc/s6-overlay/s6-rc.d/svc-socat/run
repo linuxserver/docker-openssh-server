@@ -1,0 +1,18 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+SOCAT_ENABLED=${SOCAT_ENABLED:-false}
+SOCAT_LISTEN_PORT=${SOCAT_LISTEN_PORT:-43388}
+SOCAT_TARGET_HOST=${SOCAT_TARGET_HOST:-localhost}
+SOCAT_TARGET_PORT=${SOCAT_TARGET_PORT:-43389}
+SOCAT_Log_Level=${SOCAT_LOG_LEVEL:--ddd}
+
+if [[ "${SOCAT_ENABLED}" != "true" ]]; then
+    echo "Socat service disabled. Set SOCAT_ENABLED=true to enable."
+    exec sleep infinity
+fi
+
+echo "Starting socat forwarding: LISTEN:${SOCAT_LISTEN_PORT} -> ${SOCAT_TARGET_HOST}:${SOCAT_TARGET_PORT}"
+exec /usr/bin/socat ${SOCAT_Log_Level} \
+    TCP-LISTEN:${SOCAT_LISTEN_PORT},fork,reuseaddr \
+    TCP4:${SOCAT_TARGET_HOST}:${SOCAT_TARGET_PORT}
