@@ -9,7 +9,7 @@ bash                    5.2.37-r0         apk
 brotli-libs             1.1.0-r2          apk     
 busybox                 1.37.0-r20        apk     
 busybox-binsh           1.37.0-r20        apk     
-c-ares                  1.34.5-r0         apk     
+c-ares                  1.34.6-r0         apk     
 ca-certificates         20250911-r0       apk     
 ca-certificates-bundle  20250911-r0       apk     
 catatonit               0.2.1-r0          apk     
@@ -57,7 +57,7 @@ shadow                  4.17.3-r0         apk
 skalibs-libs            2.14.4.0-r0       apk     
 ssl_client              1.37.0-r20        apk     
 sudo                    1.9.17_p2-r0      apk     
-tzdata                  2025b-r0          apk     
+tzdata                  2025c-r0          apk     
 utmps-libs              0.1.3.1-r0        apk     
 zlib                    1.3.1-r2          apk     
 zstd-libs               1.5.7-r0          apk     
