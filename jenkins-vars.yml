@@ -15,7 +15,7 @@ repo_vars:
   - DEV_DOCKERHUB_IMAGE = 'lsiodev/openssh-server'
   - PR_DOCKERHUB_IMAGE = 'lspipepr/openssh-server'
   - DIST_IMAGE = 'alpine'
-  - DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.22/main/'
+  - DIST_REPO = 'http://dl-cdn.alpinelinux.org/alpine/v3.23/main/'
   - DIST_REPO_PACKAGES = 'openssh-server-pam'
   - MULTIARCH='true'
   - CI='true'
