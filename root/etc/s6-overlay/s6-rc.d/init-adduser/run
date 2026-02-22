@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-if [[ ! -f "/usermod.done" ]] && [[ -n "${USER_NAME}" ]] && [[ "${USER_NAME}" != "abc" ]] && grep -q "^${USER_NAME}" /etc/passwd; then
+if [[ ! -f "/usermod.done" ]] && [[ -n "${USER_NAME}" ]] && [[ "${USER_NAME}" != "abc" ]] && grep -q "^${USER_NAME}:" /etc/passwd; then
     echo "*** USER_NAME cannot be set to an user that already exists in /etc/passwd. Halting init. ***"
     sleep infinity
 else
