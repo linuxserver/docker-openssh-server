@@ -117,6 +117,7 @@ init_diagram: |
   "openssh-server:latest" <- Base Images
 # changelog
 changelogs:
+  - {date: "03.08.26:", desc: "Add a healthcheck reporting whether sshd is listening."}
   - {date: "05.07.26:", desc: "Rebase to Alpine 3.24."}
   - {date: "28.12.25:", desc: "Rebase to Alpine 3.23."}
   - {date: "05.07.25:", desc: "Rebase to Alpine 3.22."}

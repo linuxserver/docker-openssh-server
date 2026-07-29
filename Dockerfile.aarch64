@@ -38,4 +38,7 @@ COPY /root /
 
 EXPOSE 2222
 
+HEALTHCHECK --start-period=30s --interval=30s --timeout=10s --retries=3 \
+  CMD /healthcheck.sh
+
 VOLUME /config
