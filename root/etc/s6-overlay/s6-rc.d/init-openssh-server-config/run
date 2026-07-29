@@ -86,6 +86,75 @@ else
     echo "User/password ssh access is disabled."
 fi
 
+# otp (2FA) access
+OTP_SECRET=/config/.google_authenticator
+
+# rebuilt from a known state on every start so the variable can be turned back
+# off again. sshd resolves the plain sshd PAM service, not sshd.pam.
+if [[ "$OTP_ACCESS" == "true" ]] || grep -q "pam_google_authenticator.so" /etc/pam.d/sshd; then
+    cp /etc/pam.d/sshd.default /etc/pam.d/sshd
+
+    if [[ "$OTP_ACCESS" == "true" ]]; then
+        {
+            echo "#%PAM-1.0"
+
+            # the whole auth stack runs for keyboard-interactive, so the unix
+            # password prompt is only carried over when password access is on
+            if [[ "$PASSWORD_ACCESS" == "true" ]]; then
+                grep -E '^[[:space:]]*auth[[:space:]]' /etc/pam.d/sshd.default
+            fi
+
+            # nullok lets a user that has not enrolled yet log in, which is what
+            # makes the first otp-setup run possible. The module says so by
+            # answering PAM_IGNORE, and a stack whose only module is ignored has
+            # nothing that succeeded, so it is the trailing pam_permit that
+            # carries the login. A wrong code dies before reaching it.
+            echo "auth [success=ok ignore=ignore default=die] pam_google_authenticator.so nullok secret=${OTP_SECRET}"
+            echo "auth required pam_permit.so"
+
+            # the stock account and session checks read /etc/shadow, which sshd
+            # cannot do here because it runs as the ssh user rather than root.
+            # Nothing is lost by leaving them out: without OTP this image does
+            # not enable PAM at all, so none of them run today either.
+            echo "account required pam_permit.so"
+            echo "password required pam_permit.so"
+            echo "session required pam_permit.so"
+        } > /etc/pam.d/sshd
+    fi
+fi
+sed -i '/^# >>> OTP_ACCESS >>>$/,/^# <<< OTP_ACCESS <<<$/d' /config/sshd/sshd_config
+
+if [[ "$OTP_ACCESS" == "true" ]]; then
+    if [[ "$PASSWORD_ACCESS" == "true" ]]; then
+        AUTH_METHODS="keyboard-interactive publickey,keyboard-interactive"
+    else
+        AUTH_METHODS="publickey,keyboard-interactive"
+    fi
+
+    # sshd keeps the first value it reads for a keyword, so an active setting
+    # earlier in the file silently wins over the block appended below
+    if grep -qE '^[[:space:]]*(UsePAM|KbdInteractiveAuthentication|AuthenticationMethods)[[:space:]]' /config/sshd/sshd_config; then
+        echo "*** WARNING: /config/sshd/sshd_config already sets UsePAM, KbdInteractiveAuthentication or AuthenticationMethods. Remove those lines, otherwise OTP will not be enforced. ***"
+    fi
+
+    cat >> /config/sshd/sshd_config << EOF
+# >>> OTP_ACCESS >>>
+UsePAM yes
+KbdInteractiveAuthentication yes
+AuthenticationMethods ${AUTH_METHODS}
+# <<< OTP_ACCESS <<<
+EOF
+
+    if [[ -f "$OTP_SECRET" ]]; then
+        echo "OTP (2FA) ssh access is enabled."
+    else
+        echo "OTP (2FA) ssh access is enabled, but ${USER_NAME} has no secret yet and is not prompted for a code."
+        echo "Run 'google-authenticator -t -d -f -r 3 -R 30 -W -s ${OTP_SECRET}' as ${USER_NAME} to enroll."
+    fi
+else
+    echo "OTP (2FA) ssh access is disabled."
+fi
+
 # set umask for sftp
 UMASK=${UMASK:-022}
 sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /config/sshd/sshd_config
