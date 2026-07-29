@@ -149,7 +149,7 @@ EOF
         echo "OTP (2FA) ssh access is enabled."
     else
         echo "OTP (2FA) ssh access is enabled, but ${USER_NAME} has no secret yet and is not prompted for a code."
-        echo "Run 'google-authenticator -t -d -f -r 3 -R 30 -W -s ${OTP_SECRET}' as ${USER_NAME} to enroll."
+        echo "Log in and run 'otp-setup' to enroll."
     fi
 else
     echo "OTP (2FA) ssh access is disabled."
