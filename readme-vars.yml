@@ -32,6 +32,7 @@ opt_param_env_vars:
   - {env_var: "PUBLIC_KEY_URL", env_value: "https://github.com/username.keys", desc: "Optionally specify a URL containing the public key."}
   - {env_var: "SUDO_ACCESS", env_value: "false", desc: "Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access."}
   - {env_var: "PASSWORD_ACCESS", env_value: "false", desc: "Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well."}
+  - {env_var: "OTP_ACCESS", env_value: "false", desc: "Set to `true` to require a one time password (2FA) in addition to the ssh key or the password. See the OTP section below."}
   - {env_var: "USER_PASSWORD", env_value: "password", desc: "Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access."}
   - {env_var: "USER_PASSWORD_FILE", env_value: "/path/to/file", desc: "Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets)."}
   - {env_var: "USER_NAME", env_value: "linuxserver.io", desc: "Optionally specify a user name (Default:`linuxserver.io`)"}
@@ -62,6 +63,19 @@ app_setup_block: |
   #### TIPS
   You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.
   You can optionally set the docker argument `hostname`
+
+  ## OTP (2FA)
+
+  Set `OTP_ACCESS` to `true` to require a time based one time password on top of the ssh key, or on top of the password when `PASSWORD_ACCESS` is enabled as well. Any TOTP application can generate the codes. The secret is stored in `/config/.google_authenticator`, so it survives recreating the container.
+
+  Until that secret exists, the key alone still gets you in. That is what makes the first login possible, and a banner points you at the command to run:
+  ```
+  otp-setup
+  ```
+
+  Scan the QR code with your authenticator application, then write down the scratch codes. They are the only way back in if you lose the application. From the next login on, sshd asks for a verification code.
+
+  `otp-setup --show` prints the secret again. Running `otp-setup` a second time replaces it, after asking for confirmation.
 
   ## Key Generation
 
@@ -117,6 +131,8 @@ init_diagram: |
   "openssh-server:latest" <- Base Images
 # changelog
 changelogs:
+  - {date: "03.08.26:", desc: "Add optional OTP (2FA) support via `OTP_ACCESS`."}
+  - {date: "03.08.26:", desc: "Add a healthcheck reporting whether sshd is listening."}
   - {date: "05.07.26:", desc: "Rebase to Alpine 3.24."}
   - {date: "28.12.25:", desc: "Rebase to Alpine 3.23."}
   - {date: "05.07.25:", desc: "Rebase to Alpine 3.22."}
