@@ -12,6 +12,7 @@ LABEL maintainer="aptalca"
 RUN \
   echo "**** install runtime packages ****" && \
   apk add --no-cache --upgrade \
+    google-authenticator \
     logrotate \
     nano \
     netcat-openbsd \
@@ -28,6 +29,7 @@ RUN \
   printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** setup openssh environment ****" && \
   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config && \
+  cp /etc/pam.d/sshd /etc/pam.d/sshd.default && \
   usermod --shell /bin/bash abc && \
   rm -rf \
     /tmp/* \
@@ -37,5 +39,8 @@ RUN \
 COPY /root /
 
 EXPOSE 2222
+
+HEALTHCHECK --start-period=30s --interval=30s --timeout=10s --retries=3 \
+  CMD /healthcheck.sh
 
 VOLUME /config
