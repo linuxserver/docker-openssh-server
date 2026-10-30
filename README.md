@@ -80,6 +80,19 @@ It is also possible to run multiple copies of this container with different port
 You can volume map your own text file to `/etc/motd` to override the message displayed upon connection.
 You can optionally set the docker argument `hostname`
 
+## OTP (2FA)
+
+Set `OTP_ACCESS` to `true` to require a time based one time password on top of the ssh key, or on top of the password when `PASSWORD_ACCESS` is enabled as well. Any TOTP application can generate the codes. The secret is stored in `/config/.google_authenticator`, so it survives recreating the container.
+
+Until that secret exists, the key alone still gets you in. That is what makes the first login possible, and a banner points you at the command to run:
+```
+otp-setup
+```
+
+Scan the QR code with your authenticator application, then write down the scratch codes. They are the only way back in if you lose the application. From the next login on, sshd asks for a verification code.
+
+`otp-setup --show` prints the secret again. Running `otp-setup` a second time replaces it, after asking for confirmation.
+
 ## Key Generation
 
 This container has a helper script to generate an ssh private/public key. In order to generate a key please run:
@@ -116,6 +129,7 @@ services:
       - PUBLIC_KEY_URL=https://github.com/username.keys #optional
       - SUDO_ACCESS=false #optional
       - PASSWORD_ACCESS=false #optional
+      - OTP_ACCESS=false #optional
       - USER_PASSWORD=password #optional
       - USER_PASSWORD_FILE=/path/to/file #optional
       - USER_NAME=linuxserver.io #optional
@@ -142,6 +156,7 @@ docker run -d \
   -e PUBLIC_KEY_URL=https://github.com/username.keys `#optional` \
   -e SUDO_ACCESS=false `#optional` \
   -e PASSWORD_ACCESS=false `#optional` \
+  -e OTP_ACCESS=false `#optional` \
   -e USER_PASSWORD=password `#optional` \
   -e USER_PASSWORD_FILE=/path/to/file `#optional` \
   -e USER_NAME=linuxserver.io `#optional` \
@@ -169,6 +184,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e PUBLIC_KEY_URL=https://github.com/username.keys` | Optionally specify a URL containing the public key. |
 | `-e SUDO_ACCESS=false` | Set to `true` to allow `linuxserver.io`, the ssh user, sudo access. Without `USER_PASSWORD` set, this will allow passwordless sudo access. |
 | `-e PASSWORD_ACCESS=false` | Set to `true` to allow user/password ssh access. You will want to set `USER_PASSWORD` or `USER_PASSWORD_FILE` as well. |
+| `-e OTP_ACCESS=false` | Set to `true` to require a one time password (2FA) in addition to the ssh key or the password. See the OTP section below. |
 | `-e USER_PASSWORD=password` | Optionally set a sudo password for `linuxserver.io`, the ssh user. If this or `USER_PASSWORD_FILE` are not set but `SUDO_ACCESS` is set to true, the user will have passwordless sudo access. |
 | `-e USER_PASSWORD_FILE=/path/to/file` | Optionally specify a file that contains the password. This setting supersedes the `USER_PASSWORD` option (works with docker secrets). |
 | `-e USER_NAME=linuxserver.io` | Optionally specify a user name (Default:`linuxserver.io`) |
@@ -337,6 +353,8 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **03.08.26:** - Add optional OTP (2FA) support via `OTP_ACCESS`.
+* **03.08.26:** - Add a healthcheck reporting whether sshd is listening.
 * **05.07.26:** - Rebase to Alpine 3.24.
 * **28.12.25:** - Rebase to Alpine 3.23.
 * **05.07.25:** - Rebase to Alpine 3.22.

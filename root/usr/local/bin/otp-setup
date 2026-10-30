@@ -1,0 +1,74 @@
+#! /bin/bash
+# Generate, regenerate or display the TOTP secret used by OTP_ACCESS.
+
+set -e
+
+# absolute, and matching the secret= passed to pam_google_authenticator, so the
+# helper and the PAM module always agree on the file regardless of $HOME
+SECRET_FILE=/config/.google_authenticator
+
+usage() {
+    cat << EOF
+Usage:
+  otp-setup            Generate a TOTP secret, or regenerate it after asking.
+                       Prints the QR code, the secret and the scratch codes.
+  otp-setup --show     Print the current secret file again.
+  otp-setup --help     Show this help.
+EOF
+}
+
+case "${1:-}" in
+    --show|-s)
+        if [[ ! -f "$SECRET_FILE" ]]; then
+            echo "No OTP secret yet. Run 'otp-setup' to create one."
+            exit 1
+        fi
+        echo "This prints your secret and scratch codes in clear text. Make sure"
+        echo "nobody is watching and that this session is not being recorded."
+        echo
+        echo "=== ${SECRET_FILE} ==="
+        echo "First line is the base32 secret, the trailing digit lines are the"
+        echo "emergency scratch codes."
+        echo
+        cat "$SECRET_FILE"
+        ;;
+    --help|-h)
+        usage
+        ;;
+    "")
+        if [[ -f "$SECRET_FILE" ]]; then
+            read -r -p "A secret already exists in ${SECRET_FILE}. Regenerating invalidates the old one. Continue? [y/N] " answer || answer=""
+            if [[ ! "$answer" =~ ^[Yy]$ ]]; then
+                echo "Aborted."
+                exit 0
+            fi
+            backup="${SECRET_FILE}.bak.$(date +%s)"
+            cp "$SECRET_FILE" "$backup"
+            echo "Old secret kept in ${backup}"
+        fi
+
+        # typing the first code back catches a QR that was scanned wrong, but
+        # there is nothing to type it with when this runs without a terminal,
+        # as it does under docker exec
+        confirm=()
+        if [[ ! -t 0 ]]; then
+            confirm=(--no-confirm)
+        fi
+
+        # -t time based, -d one use per code, -f write without asking,
+        # -r 3 -R 30 three attempts per 30s, -W narrow the accepted time window
+        google-authenticator -t -d -f -r 3 -R 30 -W "${confirm[@]}" -s "$SECRET_FILE"
+        chmod 600 "$SECRET_FILE"
+
+        echo
+        echo "=== setup complete ==="
+        echo "Scan the QR code above with your authenticator application."
+        echo "Write down the scratch codes too. They are the only way back in if"
+        echo "you lose the application."
+        echo "Your next login asks for a 6 digit code."
+        ;;
+    *)
+        usage
+        exit 2
+        ;;
+esac
