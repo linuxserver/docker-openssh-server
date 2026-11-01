@@ -17,14 +17,14 @@ coreutils               9.11-r0           apk
 coreutils-env           9.11-r0           apk     
 coreutils-fmt           9.11-r0           apk     
 coreutils-sha512sum     9.11-r0           apk     
-curl                    8.22.0-r0         apk     
+curl                    8.23.0-r0         apk     
 findutils               4.10.0-r1         apk     
 jq                      1.8.2-r0          apk     
 libapk                  3.0.8-r0          apk     
 libattr                 2.5.2-r2          apk     
 libbsd                  0.12.2-r0         apk     
 libcrypto3              3.5.9-r0          apk     
-libcurl                 8.22.0-r0         apk     
+libcurl                 8.23.0-r0         apk     
 libedit                 20260508.3.1-r1   apk     
 libidn2                 2.3.8-r0          apk     
 libintl                 1.0-r0            apk     
